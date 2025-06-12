@@ -38,11 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'auth',
+    'authe',
     'cart',
     'shop',
     'user',
     'vendor',
+
+    # downloaded module for phonenumber edit in address model
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [

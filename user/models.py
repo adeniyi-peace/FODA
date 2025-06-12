@@ -6,7 +6,18 @@ from django.utils.translation import gettext_lazy as _
 import uuid # For generating unique codes
 from datetime import timedelta
 
+from phonenumber_field.formfields import PhoneNumberField
+
 # Create your models here.
+
+
+def unique_code():
+    code = str(uuid.uuid4().hex[:6]).upper() # Or use secrets.token_hex(3)
+
+    while User.objects.filter(verification_code=code).exists():
+        code = str(uuid.uuid4().hex[:6]).upper()
+
+    return code
 
 
 class CustomUserManager(BaseUserManager):
@@ -46,6 +57,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     verification_code = models.CharField(max_length=6, blank=True, null=True, unique=True)
     verification_code_expires_at = models.DateTimeField(blank=True, null=True)
 
+    # Add related_name to avoid clashes
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_name='customuser_set', # Unique related_name
+        related_query_name='customuser',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='customuser_permissions_set', # Use another unique related_name
+        related_query_name='customuser_permission'
+    )
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["DOB", "first_name", "last_name"]
 
@@ -80,11 +109,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.verification_code_expires_at = None # Clear expiration time
         self.save()
 
+class Address(models.Model):
+    user = models.ForeignKey(User, related_name="address", on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=100)
+    phone = PhoneNumberField(region="NG")
+    city = models.CharField( max_length=50)
+    state = models.CharField(max_length=50)
+    country = models.CharField( max_length=50)
 
-def unique_code():
-    code = str(uuid.uuid4().hex[:6]).upper() # Or use secrets.token_hex(3)
-
-    while User.objects.filter(verification_code=code).exists():
-        code = str(uuid.uuid4().hex[:6]).upper()
-
-    return code
+    def save(self, *args, **kwargs):
+        self.full_name = f"{self.last_name} {self.first_name}"
+        super().save(*args, **kwargs)
+    
