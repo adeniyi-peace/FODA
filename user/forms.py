@@ -28,4 +28,4 @@ class Addressform(forms.ModelForm):
 
     class Meta:
         model = Address
-        excludes =["user", "full_name"]
+        exclude =["user", "full_name"]

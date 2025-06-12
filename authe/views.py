@@ -74,7 +74,7 @@ class SignUpView(View):
 
 class LoginView(View):
     def get(self, request):
-        form = LoginForm
+        form = LoginForm()
 
         next_url = request.GET.get("next", "")
 
