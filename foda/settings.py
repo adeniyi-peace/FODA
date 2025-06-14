@@ -11,14 +11,20 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+
+import environ
 import os
 
-
-
+# setup environ
+env = environ.Env(
+    #set default value
+    DEBUG = (bool, True)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -48,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sorl.thumbnail',
     # downloaded module for phonenumber edit in address model
-    'phonenumber_field',  # type: ignore
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -140,9 +146,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.Email.Backend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "myemail@gmail.com"
-EMAIL_HOST_PASSWORD = "thesimcooo"
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+AUTH_USER_MODEL = "user.user" 
+
+
+LOGIN_URL = "/auth/login/"

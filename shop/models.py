@@ -15,7 +15,7 @@ class Food(models.Model):
         return self.name
 
 class Customer(models.Model):
-    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
+    user = models.OneToOneField('user.User', on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
