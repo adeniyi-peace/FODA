@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% comment %} {% load sorl_thumbnail %}
+{% thumbnail item.image "100x100" crop="center" as im %}
+    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %} {% endcomment %}
+{% block title %}Cart Summary{% endblock %}
+{% block content %}
+ Cart Summary
+{%endblock%}
