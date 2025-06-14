@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-
-# Create your views here.
-=======
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -179,4 +174,3 @@ class UserPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
     template_name = "auth/password_change.html"
     success_url = reverse_lazy("dashboard")
     success_message = "Your password was changed."
->>>>>>> c81ada65a6be1235afee95ef52afea834f314b08

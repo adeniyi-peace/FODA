@@ -37,7 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'shop',
     'cart', 
-    'authe',
+    'custom_auth',
     'user',
     'vendor',
     'django.contrib.admin',
@@ -47,15 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sorl.thumbnail',
-
-    'authe',
-    'cart',
-    'shop',
-    'user',
-    'vendor',
-
     # downloaded module for phonenumber edit in address model
-    'phonenumber_field'
+    'phonenumber_field',  # type: ignore
 ]
 
 MIDDLEWARE = [
