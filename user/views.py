@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth import logout
+
 
 from .forms import EditUserForm, Addressform
 from .models import Address
@@ -129,3 +131,14 @@ class DeleteAddressView(LoginRequiredMixin, View):
         messages.success(request, "Your address has been deleted")
 
         return redirect()
+    
+
+class OrderView(LoginRequiredMixin, View):
+    def get(self, request):
+        orders = request.user
+
+        context = {
+            "orders":orders,
+        }
+        
+        return render(request, "", context=context)

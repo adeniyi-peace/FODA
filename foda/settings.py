@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'vendor',
 
     # downloaded module for phonenumber edit in address model
-    'phonenumber_field'
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +147,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+AUTH_USER_MODEL = "user.user" 
 
 
 LOGIN_URL = "/auth/login/"

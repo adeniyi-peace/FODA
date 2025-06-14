@@ -11,6 +11,7 @@ from phonenumber_field.formfields import PhoneNumberField
 # Create your models here.
 
 
+
 def unique_code():
     code = str(uuid.uuid4().hex[:6]).upper() # Or use secrets.token_hex(3)
 
@@ -52,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=100)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_vendor = models.BooleanField(default=False)
     date_joined = models.DateField(default=timezone.now)
 
     verification_code = models.CharField(max_length=6, blank=True, null=True, unique=True)
@@ -76,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["DOB", "first_name", "last_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
 
@@ -90,6 +92,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.first_name
 
     def save(self, *args, **kwargs):
+        self.first_name = self.first_name.strip().capitalize()
+        self.last_name = self.last_name.strip().capitalize()
         self.full_name = f"{self.last_name} {self.first_name}"
         super().save(*args, **kwargs)
 
