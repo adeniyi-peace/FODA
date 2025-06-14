@@ -14,7 +14,7 @@ from .models import Address
 
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, "")
+        return render(request, "user/dashboard.html")
     
 
 class EditUserProfileView(LoginRequiredMixin, View):
@@ -26,7 +26,7 @@ class EditUserProfileView(LoginRequiredMixin, View):
             "form":form,
         }
         
-        return render(request, "", context=context)
+        return render(request, "user/edit_user_profile.html", context=context)
     
     def post(self, request):
         user = request.user
@@ -43,7 +43,7 @@ class EditUserProfileView(LoginRequiredMixin, View):
             "form":form,
         }
         
-        return render(request, "", context=context)
+        return render(request, "user/edit_user_profile.html", context=context)
     
 
 class DeleteUserProfileView(LoginRequiredMixin, View):
@@ -59,7 +59,7 @@ class DeleteUserProfileView(LoginRequiredMixin, View):
 
 class AddressView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, "")
+        return render(request, "user/address_list.html")
 
 
 class AddAddressView(LoginRequiredMixin, View):
@@ -70,7 +70,7 @@ class AddAddressView(LoginRequiredMixin, View):
             "form":form
         }
 
-        return render(request, "", context)
+        return render(request, "user/add_address.html", context)
 
     def post(self, request):
         form = Addressform(request.POST)
@@ -82,13 +82,13 @@ class AddAddressView(LoginRequiredMixin, View):
 
             messages.success(request, "New address has been added")
 
-            return redirect()
+            return redirect(reverse("address_list"))
 
         context = {
             "form":form
         }
 
-        return render(request, "", context)
+        return render(request, "user/add_address.html", context)
 
 
 # Note: change Address.objects.get(pk=pk) so that it will relate directly
@@ -103,7 +103,7 @@ class EditAddressView(LoginRequiredMixin, View):
             "form":form
         }
 
-        return render(request, "", context)
+        return render(request, "user/edit_address.html", context)
 
     def post(self, request, pk):
         model = Address.objects.get(pk=pk)
@@ -114,13 +114,13 @@ class EditAddressView(LoginRequiredMixin, View):
 
             messages.success(request, "Your have succefully edited Your Address")
 
-            return redirect()
+            return redirect(reverse("address_list"))
 
         context = {
             "form":form
         }
 
-        return render(request, "", context)
+        return render(request, "user/edit_address.html", context)
     
 
 class DeleteAddressView(LoginRequiredMixin, View):
@@ -130,7 +130,7 @@ class DeleteAddressView(LoginRequiredMixin, View):
 
         messages.success(request, "Your address has been deleted")
 
-        return redirect()
+        return redirect(reverse("address_list"))
     
 
 class OrderView(LoginRequiredMixin, View):
@@ -141,4 +141,4 @@ class OrderView(LoginRequiredMixin, View):
             "orders":orders,
         }
         
-        return render(request, "", context=context)
+        return render(request, "user/orders_list.html", context=context)

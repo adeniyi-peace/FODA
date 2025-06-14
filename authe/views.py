@@ -26,7 +26,7 @@ class SignUpView(View):
             "form":form
         }
 
-        return render(request, "", context=context)
+        return render(request, "auth/signup.html", context=context)
         
 
     def post(self, request):
@@ -61,13 +61,13 @@ class SignUpView(View):
             messages.success(request, "Check your email for the confirmation Code")
 
             # redirects user to authenrication page
-            return render(redirect())
+            return render(redirect(reverse("verify_email_page")))
         
         context = {
             "form":form
         }
 
-        return render(request, "", context=context)
+        return render(request, "auth/signup.html", context=context)
         
 
 
@@ -83,7 +83,7 @@ class LoginView(View):
             "next":next_url
         }
 
-        return render(request, "", context=context)
+        return render(request, "auth/login.html", context=context)
         
 
     def post(self, request):
@@ -105,7 +105,7 @@ class LoginView(View):
                     if next_url != "":
                         return redirect(next_url)
 
-                    return redirect()
+                    return redirect(reverse("dashboard"))
 
                 else:
                     messages.error(request, "Your account is not active. " \
@@ -118,12 +118,12 @@ class LoginView(View):
             "next":next_url
         }
 
-        return render(request, "", context=context)
+        return render(request, "auth/login.html", context=context)
         
 
 class EmailAuthenticationView(View):
     def get(self, request):
-        return render(request, "")
+        return render(request, "auth/email_code_verification.html")
     
     def post(self, request):
         code = request.POST.get("verification_code","")
@@ -141,11 +141,11 @@ class EmailAuthenticationView(View):
 
             login(request, user)
 
-            return redirect() 
+            return redirect(reverse("dashboard")) 
 
         except User.DoesNotExist:
             messages.error(request, "The verification code is invalid or has expired. Please request a new one.")
-            return render(request, "")
+            return render(request, "auth/email_code_verification.html")
         
 
 class LogoutView(View):
@@ -159,7 +159,7 @@ class LogoutView(View):
 class UserEmailPasswordResetView(SuccessMessageMixin, PasswordResetView):
     email_template_name = "email_password_reset.html"
     template_name = "auth/confirm_email_password_reset.html"
-    success_url = reverse_lazy()
+    success_url = reverse_lazy("login")
     success_message = "We have  emailed you instructions for resetting your password" \
                     "If an account exists with the email you entered. You should recieve them shortly" \
                     "If you don't recieve an email," \
