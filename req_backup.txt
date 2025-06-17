@@ -1,3 +1,17 @@
+asgiref==3.8.1
+colorama==0.4.6
+Django==5.2.3
+django-environ==0.12.0
+django-phonenumber-field==8.1.0
+phonenumbers==9.0.7
+pillow==11.2.1
+sorl-thumbnail==12.11.0
+sqlparse==0.5.3
+typing_extensions==4.14.0
+tzdata==2025.2
+
+
+
 """
 Django settings for foda project.
 
@@ -56,8 +70,17 @@ INSTALLED_APPS = [
     # downloaded module for phonenumber edit in address model
     'phonenumber_field',
 
+    # for checking how many times a users tries to log in
+    'axes',
+
     'tailwind',
-    'theme'
+    'theme',
+]
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +91,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'axes.middleware.AxesMiddleware'
 ]
 
 ROOT_URLCONF = 'foda.urls'
@@ -163,4 +188,5 @@ LOGIN_URL = "/auth/login/"
 
 TAILWIND_APP_NAME = "theme"
 
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+AXES_FAILURE_LIMIT = 3
+AXES_RESET_ON_SUCCESS = True

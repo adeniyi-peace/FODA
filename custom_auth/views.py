@@ -4,6 +4,7 @@ from django.views import View
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django.core.mail import send_mail, EmailMultiAlternatives
@@ -40,7 +41,7 @@ class SignUpView(View):
 
             user.generate_verification_code
 
-            htmly = get_template("auth/...html")
+            htmly = get_template("auth/email_verification.html")
 
             data = {
                 "first_name":first_name,
@@ -133,7 +134,7 @@ class EmailAuthenticationView(View):
 
             if not user.is_verification_code_valid():
                 messages.error(request, "The verification code is invalid or has expired. Please request a new one.")
-                return render(request, "") 
+                return render(request, "auth/email_code_verification.html") 
 
             user.activate() 
 
@@ -170,7 +171,7 @@ class UserPasswordResetView(SuccessMessageMixin, PasswordResetConfirmView):
     success_url = reverse_lazy("login")
     success_message = "Your password has been set.  You may go ahead and log in now."
 
-class UserPasswordChangeView(SuccessMessageMixin, PasswordChangeView):
+class UserPasswordChangeView(LoginRequiredMixin, SuccessMessageMixin, PasswordChangeView):
     template_name = "auth/password_change.html"
     success_url = reverse_lazy("dashboard")
     success_message = "Your password was changed."
