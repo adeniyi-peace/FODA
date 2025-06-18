@@ -56,8 +56,17 @@ INSTALLED_APPS = [
     # downloaded module for phonenumber edit in address model
     'phonenumber_field',
 
+    # for checking how many times a users tries to log in
+    'axes',
+
     'tailwind',
-    'theme'
+    'theme',
+]
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +77,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'axes.middleware.AxesMiddleware'
 ]
 
 ROOT_URLCONF = 'foda.urls'
@@ -162,5 +173,10 @@ AUTH_USER_MODEL = "user.user"
 LOGIN_URL = "/auth/login/"
 
 TAILWIND_APP_NAME = "theme"
+
+AXES_FAILURE_LIMIT = 10
+AXES_RESET_ON_SUCCESS = True
+AXES_LOCKOUT_PARAMETERS = ["username"]
+AXES_USERNAME_FORM_FIELD = "username"
 
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"

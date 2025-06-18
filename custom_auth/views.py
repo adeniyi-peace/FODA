@@ -15,6 +15,8 @@ from user.models import User
 from .forms import SignUpForm, LoginForm
 from foda.settings import EMAIL_HOST_USER
 
+from axes.models import AccessAttempt
+
 
 # TBD - NAME OF THE TEMPLATES AND REDIRECTS
 
@@ -39,7 +41,7 @@ class SignUpView(View):
 
             user = form.save()
 
-            user.generate_verification_code
+            user.generate_verification_code()
 
             htmly = get_template("auth/email_verification.html")
 
@@ -62,7 +64,7 @@ class SignUpView(View):
             messages.success(request, "Check your email for the confirmation Code")
 
             # redirects user to authenrication page
-            return render(redirect(reverse("verify_email_page")))
+            return redirect(reverse("verify_email_page"))
         
         context = {
             "form":form
@@ -88,11 +90,11 @@ class LoginView(View):
         
 
     def post(self, request):
-        form = LoginForm(request.POST)
+        form = LoginForm(request, request.POST)
         next_url= request.POST.get("next", "")
 
         if form.is_valid():
-            email = form.cleaned_data.get("email")
+            email = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
 
             user = authenticate(request, username=email, password=password)
@@ -112,11 +114,19 @@ class LoginView(View):
                     messages.error(request, "Your account is not active. " \
                     "Please check your email for the verification link or code.")
                     
-                    return redirect(reverse("verify_email_page")) 
+                    return redirect(reverse("verify_email_page"))
+                
+        # check how many times an email has attempted login
+        if email:
+            login_attempt = AccessAttempt.objects.get(username=email
+                                                # for more specific tracking, also used by IP:
+                                                # ip_address = get_client_ip(request)  
+                                                ).failures_since_start 
         
         context = {
             "form":form,
-            "next":next_url
+            "next":next_url,
+            "login_attempt":login_attempt,
         }
 
         return render(request, "auth/login.html", context=context)
@@ -158,7 +168,7 @@ class LogoutView(View):
 
 
 class UserEmailPasswordResetView(SuccessMessageMixin, PasswordResetView):
-    email_template_name = "email_password_reset.html"
+    email_template_name = "auth/email_password_reset.html"
     template_name = "auth/confirm_email_password_reset.html"
     success_url = reverse_lazy("login")
     success_message = "We have  emailed you instructions for resetting your password" \

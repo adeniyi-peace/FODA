@@ -30,7 +30,12 @@
         <button type="submit">Login</button>
     </form>
 
-    
+    {% if login_attempt >= 3 %}
+    <div>
+        <p>Forgotten Password</p>
+        <a href="{% url 'password_reset' %}">Reset Password</a>
+    </div>
+    {% endif %}
 
     <br>
     <hr>

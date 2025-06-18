@@ -10,7 +10,7 @@ class SignUpForm(UserCreationForm):
         fields = ["email", "DOB", "first_name", "last_name", "password1", "password2"]
 
 class LoginForm(AuthenticationForm):
-    email = forms.EmailField(required=True)
+    username = forms.EmailField(required=True, widget=forms.EmailInput(attrs={"placeholder":"Email"}))
     password = forms.CharField(required=True, widget=forms.PasswordInput())
 
 
