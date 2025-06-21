@@ -1,4 +1,6 @@
-{% load i18n %}{% autoescape off %}
+{% load i18n %}
+{% autoescape off %}
+
 {% blocktranslate %}Welcome to {{ site_name }}  {{ first_name}}.{% endblocktranslate %}
 
 {% translate 'Hello' %} {{ user.get_full_name }} {% translate 'you have created an account with us ' %}
