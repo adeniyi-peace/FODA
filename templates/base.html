@@ -16,7 +16,8 @@
                 <li><a href="#">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="{% url 'cart_summary' %}">Cart Summary</a></li>
+                <li><a href="{% url 'cart_summary' %}" id="cart-quantity">cart {{ cart|length }} items</a></li>
+                
             </ul>
         </nav>
 
