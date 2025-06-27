@@ -121,11 +121,14 @@ class Address(models.Model):
     last_name = models.CharField(max_length=50)
     full_name = models.CharField(max_length=100)
     phone = PhoneNumberField(region="NG")
+    address = models.CharField( max_length=50)
     city = models.CharField( max_length=50)
     state = models.CharField(max_length=50)
     country = models.CharField( max_length=50)
 
     def save(self, *args, **kwargs):
+        self.first_name = self.first_name.strip().capitalize()
+        self.last_name = self.last_name.strip().capitalize()
         self.full_name = f"{self.last_name} {self.first_name}"
         super().save(*args, **kwargs)
     
