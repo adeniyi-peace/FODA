@@ -27,6 +27,14 @@
 
     @apply w-[40%]  mx-auto
   }
+
+  .dash-table{
+    th{
+      @apply border-b border-solid border-gray-400 text-left text-gray-400 font-medium
+    }
+
+    @apply w-full border-spacing-y-[1rem] border-separate
+  }
 }
 
 /**
