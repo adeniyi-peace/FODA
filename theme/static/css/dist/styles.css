@@ -10,10 +10,13 @@
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-orange-600: oklch(64.71% 0.21732 36.839);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
     --color-yellow-600: oklch(68.1% 0.162 75.834);
+    --color-green-600: oklch(62.7% 0.194 149.214);
     --color-indigo-500: oklch(58.5% 0.233 277.117);
     --color-indigo-700: oklch(45.7% 0.24 277.023);
+    --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
@@ -44,6 +47,9 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-burntOrange-500: #FF9D00;
+    --color-burntOrange-600: #E47400;
+    --color-burntOrange-700: #CC5500;
   }
 }
 @layer base {
@@ -251,6 +257,9 @@
   .mb-\[2rem\] {
     margin-bottom: 2rem;
   }
+  .ml-\[1rem\] {
+    margin-left: 1rem;
+  }
   .block {
     display: block;
   }
@@ -262,6 +271,9 @@
   }
   .hidden {
     display: none;
+  }
+  .inline-block {
+    display: inline-block;
   }
   .aspect-square {
     aspect-ratio: 1 / 1;
@@ -291,6 +303,12 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .min-w-\[9rem\] {
+    min-width: 9rem;
+  }
+  .min-w-\[10rem\] {
+    min-width: 10rem;
+  }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
@@ -305,6 +323,9 @@
   }
   .items-center {
     align-items: center;
+  }
+  .justify-between {
+    justify-content: space-between;
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
@@ -340,21 +361,23 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
-  .border-solid {
-    --tw-border-style: solid;
-    border-style: solid;
-  }
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
-  .border-gray-400 {
-    border-color: var(--color-gray-400);
+  .bg-burntOrange-600 {
+    background-color: var(--color-burntOrange-600);
   }
   .bg-gray-200 {
     background-color: var(--color-gray-200);
   }
+  .bg-green-600 {
+    background-color: var(--color-green-600);
+  }
   .bg-red-200 {
     background-color: var(--color-red-200);
+  }
+  .bg-red-400 {
+    background-color: var(--color-red-400);
   }
   .bg-white {
     background-color: var(--color-white);
@@ -371,6 +394,9 @@
   .fill-\[\#CC5500\] {
     fill: #CC5500;
   }
+  .fill-\[\#cc5500\] {
+    fill: #cc5500;
+  }
   .stroke-\[\#CC5500\] {
     stroke: #CC5500;
   }
@@ -382,6 +408,9 @@
   }
   .p-4 {
     padding: calc(var(--spacing) * 4);
+  }
+  .p-\[0\.5rem_1rem\] {
+    padding: 0.5rem 1rem;
   }
   .p-\[1rem\] {
     padding: 1rem;
@@ -401,8 +430,14 @@
   .py-\[0\.5rem\] {
     padding-block: 0.5rem;
   }
+  .pt-\[1rem\] {
+    padding-top: 1rem;
+  }
   .pb-\[0\.5rem\] {
     padding-bottom: 0.5rem;
+  }
+  .pl-\[1rem\] {
+    padding-left: 1rem;
   }
   .text-center {
     text-align: center;
@@ -458,6 +493,9 @@
   }
   .text-\[\#CC5500\] {
     color: #CC5500;
+  }
+  .text-burntOrange-700 {
+    color: var(--color-burntOrange-700);
   }
   .text-gray-400 {
     color: var(--color-gray-400);
@@ -523,9 +561,59 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
+  @media (width < 40rem) {
+    .max-sm\:mt-4 {
+      margin-top: calc(var(--spacing) * 4);
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:mb-4 {
+      margin-bottom: calc(var(--spacing) * 4);
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:block {
+      display: block;
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:hidden {
+      display: none;
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:w-\[90\%\] {
+      width: 90%;
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (width < 40rem) {
+    .max-sm\:grid-cols-\[auto_auto\] {
+      grid-template-columns: auto auto;
+    }
+  }
+  @media (width >= 40rem) {
+    .sm\:block {
+      display: block;
+    }
+  }
   @media (width >= 40rem) {
     .sm\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 40rem) {
+    .sm\:grid-cols-\[70\%_auto\] {
+      grid-template-columns: 70% auto;
+    }
+  }
+  @media (width >= 40rem) {
+    .sm\:grid-cols-\[auto_auto\] {
+      grid-template-columns: auto auto;
     }
   }
   @media (width >= 40rem) {
@@ -562,7 +650,7 @@
 @layer utilities;
 @layer components {
   .btn-primary {
-    background-color: var(--color-indigo-700);
+    background-color: var(--color-burntOrange-700);
     color: var(--color-white);
   }
   @media (hover: hover) {
@@ -572,7 +660,7 @@
   }
   @media (hover: hover) {
     .btn-primary:hover {
-      background-color: var(--color-indigo-500);
+      background-color: var(--color-orange-600);
     }
   }
   .btn-primary:active {
@@ -592,14 +680,14 @@
     padding: 4px 6px;
   }
   .form-control .form-div:focus-within {
-    border-color: indigo;
+    border-color: var(--color-burntOrange-700);
   }
   .form-control .form-div:focus-within {
     outline-style: var(--tw-outline-style);
     outline-width: 2px;
   }
   .form-control .form-div:focus-within {
-    outline-color: #8843f7;
+    outline-color: var(--color-burntOrange-500);
   }
   .form-control .form-div:focus-within {
     --tw-outline-style: solid;
@@ -638,6 +726,16 @@
     margin-inline: auto;
     width: 40%;
   }
+  @media (width < 48rem) {
+    .form-control {
+      width: 60%;
+    }
+  }
+  @media (width < 40rem) {
+    .form-control {
+      width: 80%;
+    }
+  }
   .dash-table th {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
@@ -650,6 +748,79 @@
     color: var(--color-gray-400);
   }
   .dash-table {
+    width: 100%;
+    border-collapse: separate;
+    --tw-border-spacing-y: 1rem;
+    border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+  }
+  .order-table th {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+    --tw-border-style: solid;
+    border-style: solid;
+    border-color: var(--color-gray-400);
+    text-align: left;
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-400);
+  }
+  @media (max-width: 640px) {
+    .order-table {
+      width: 100%;
+      --tw-border-style: none;
+      border-style: none;
+    }
+    .order-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+    .order-table tbody,
+      .order-table tr,
+      .order-table td {
+      display: block;
+      width: 100%;
+    }
+    .order-table tr {
+      margin-bottom: calc(var(--spacing) * 4);
+      border-radius: var(--radius-lg);
+      border-style: var(--tw-border-style);
+      border-width: 1px;
+      border-color: var(--color-gray-200);
+      padding: calc(var(--spacing) * 4);
+      --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .order-table .t-row,
+      .order-table td {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      border-bottom-style: var(--tw-border-style);
+      border-bottom-width: 1px;
+      border-color: var(--color-gray-100);
+      padding-inline: calc(var(--spacing) * 0);
+      padding-block: calc(var(--spacing) * 2);
+    }
+    .order-table .t-row:last-child, .order-table td:last-child {
+      border-bottom-style: var(--tw-border-style);
+      border-bottom-width: 0px;
+    }
+    .order-table .t-row:before {
+      content: attr(data-label);
+      margin-right: calc(var(--spacing) * 2);
+      --tw-font-weight: var(--font-weight-medium);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-gray-400);
+    }
+  }
+  .order-table {
     width: 100%;
     border-collapse: separate;
     --tw-border-spacing-y: 1rem;
