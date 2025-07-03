@@ -19,30 +19,34 @@
             6.84,0,1,1-6-.1V34.91H32.12v5.65a6.84,6.84,0,1,1-6,0Z"/></svg>
         <span>Order History</span>
     </h1>
+    
+    {% if user.order.all %}
     <table class="order-table">
         <thead>
             <tr class="">
                 <th class="pb-[0.5rem] font-medium">Name</th>
                 <th class="pb-[0.5rem] font-medium">Price</th>
                 <th class="pb-[0.5rem] font-medium">Date</th>
-                <th class="pb-[0.5rem] font-medium">Order Number</th>
+                <th class="pb-[0.5rem] font-medium">Quantity</th>
                 <th class="pb-[0.5rem] font-medium">Status</th>
                 <th></th>
             </tr>
         </thead>
 
         <tbody>
+            {% for order in user.order.all %}
             <tr>
                 <td class="flex items-center ">
-                    <img src="https://i.pinimg.com/736x/10/38/a7/1038a702899f4ea379153c2d44e8224e.jpg" alt="food image" class="mr-4 size-[5rem] object-cover">
-                    <h3>Jollof</h3>
+                    <img src="{{order.food.image.url}}" alt="{{order.food.name}}" class="mr-4 size-[5rem] object-cover">
+                    <h3>{{order.food.name}}</h3>
                 </td>
-                <td class="text-[#CC5500] t-row" data-label="Price:">#2000</td>
-                <td data-label="Date: " class="t-row">23-24-53</td>
-                <td data-label="Order ID: " class="t-row">2344</td>
+                <td class="text-[#CC5500] t-row" data-label="Price:">₦{{order.total_price}}</td>
+                <td data-label="Date: " class="t-row">{{order.order_date}}</td>
+                <td data-label="Quantity: " class="t-row">{{order.quantity}}</td>
                 <td data-label="Status: " class="t-row"><p class="p-[0.5rem_1rem] bg-burntOrange-600 rounded-lg inline-block">pending</p></td>
                 <td><a href="">view detail</a></td>
             </tr>
+            {% endfor %}
 
             <tr>
                 <td class="flex items-center ">
@@ -69,6 +73,8 @@
             </tr>
         </tbody>
     </table>
+    {% else %}
+    {% endif %}
 </section>
 
 {% endblock content %}

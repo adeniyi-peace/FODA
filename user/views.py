@@ -14,7 +14,14 @@ from .models import Address
 
 class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, "user/dashboard.html")
+        orders = request.user.order.all()
+        addresses = request.user.address.all()
+
+        context = {
+            "orders":orders,
+            "addresses": addresses
+        }
+        return render(request, "user/dashboard.html", context=context)
     
 
 class EditUserProfileView(LoginRequiredMixin, View):

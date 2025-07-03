@@ -22,7 +22,6 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class EditUserForm(forms.ModelForm):
-    # email = forms.EmailField(widget=forms.EmailInput({"readonly":True}))
 
     class Meta:
         model = User
@@ -32,7 +31,6 @@ class EditUserForm(forms.ModelForm):
                 }
 
 class Addressform(forms.ModelForm):
-
     class Meta:
         model = Address
         exclude =["user", "full_name"]

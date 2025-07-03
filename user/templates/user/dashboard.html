@@ -22,32 +22,32 @@
         <div class="grid grid-cols-[auto_auto_auto] gap-[0.5rem] max-sm:grid-cols-2">
             <div>
                 <p class=" text-gray-400 text-sm">Full name</p>
-                <h3>Adeniyi Peace</h3>
+                <h3>{{user.full_name}}</h3>
             </div>
 
             <div>
                 <p class=" text-gray-400 text-sm">Email</p>
-                <h3>Text@test.com</h3>
+                <h3>{{user.email}}</h3>
             </div>
 
             <div>
                 <p class=" text-gray-400 text-sm">Phone number</p>
-                <h3>5579909-7866</h3>
+                <h3>{{user.phone}}</h3>
             </div>
 
             <div>
                 <p class=" text-gray-400 text-sm">Date of birth</p>
-                <h3>23-24-53</h3>
+                <h3>{{user.DOB}}</h3>
             </div>
 
             <div>
                 <p class=" text-gray-400 text-sm">Date joined</p>
-                <h3>23-24-53</h3>
+                <h3>{{user.date_joined}}</h3>
             </div>
 
             <div>
                 <p class=" text-gray-400 text-sm">Last signed in </p>
-                <h3>23-24-53</h3>
+                <h3>{{user.last_login}}</h3>
             </div>
 
             <div>
@@ -62,8 +62,8 @@
         </div>
 
         <div class="text-right pt-[1rem] text-sm">
-            <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="">Edit Profile</a>
-            <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="">Delete Profile</a>
+            <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="{% url "edit_profile" %}">Edit Profile</a>
+            <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="{% url "delete_profile" %}">Delete Profile</a>
         </div>
     </div>
 
@@ -84,14 +84,17 @@
             <span>Cart</span>
         </h1>
         
+        {% if cart %}
         <div class="">
+            {% for item in cart %}
             <div class="flex mb-[1rem]">
-                <img class="mr-4 size-[5rem] object-cover" src="https://i.pinimg.com/736x/10/38/a7/1038a702899f4ea379153c2d44e8224e.jpg" alt="food image">
+                <img class="mr-4 size-[5rem] object-cover" src="{{item.food.image.url}}" alt="{{item.food.name}}">
                 <div>
-                    <h4>Food name</h4>
-                    <p>price</p>
+                    <h4>{{item.food.name}}</h4>
+                    <p>{{item.price}}</p>
                 </div>
             </div>
+            {% endfor %}
 
             <div class="flex mb-[1rem]">
                 <img class="mr-4 size-[5rem] object-cover" src="https://i.pinimg.com/736x/10/38/a7/1038a702899f4ea379153c2d44e8224e.jpg" alt="food image">
@@ -103,8 +106,15 @@
         </div>
 
         <div class="mt-[1rem] text-right text-[0.8rem] font-[500] text-burntOrange-700">
-            <a href="">Complete Order</a>
+            <a href="{% url "cart_summary" %}">Complete Order</a>
         </div>
+        {% else %}
+        <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
+            <h3> You do not have any items in cart</h3>
+            <p>Start shopping now</p>
+            <a class="btn-primary p-[2rem_1rem] rounded" href="{% url "index" %}">Shop Now</a>
+        </div>
+        {% endif %}
     </div>
 </section>
 
@@ -124,30 +134,34 @@
             6.84,0,1,1-6-.1V34.91H32.12v5.65a6.84,6.84,0,1,1-6,0Z"/></svg>
         <span>Order History</span>
     </h1>
+    
+    {% if orders %}
     <table class="dash-table">
         <thead>
             <tr class="">
                 <th class="pb-[0.5rem] font-medium">Name</th>
                 <th class="pb-[0.5rem] font-medium">Price</th>
                 <th class="pb-[0.5rem] font-medium">Date</th>
-                <th class="pb-[0.5rem] font-medium">Order Number</th>
+                <th class="pb-[0.5rem] font-medium">Quantity</th>
                 <th class="pb-[0.5rem] font-medium">Status</th>
                 <th></th>
             </tr>
         </thead>
 
         <tbody>
+            {% for order in orders %}
             <tr>
                 <td class="flex items-center max-sm:block">
-                    <img src="https://i.pinimg.com/736x/10/38/a7/1038a702899f4ea379153c2d44e8224e.jpg" alt="food image" class="mr-4 size-[5rem] object-cover max-sm:mb-4">
-                    <h3>Jollof</h3>
+                    <img src="{{order.food.image.url}}" alt="food image" class="mr-4 size-[5rem] object-cover max-sm:mb-4">
+                    <h3>{{order.food.name}}</h3>
                 </td>
-                <td class="text-[#CC5500]">#2000</td>
-                <td>23-24-53</td>
-                <td>2344</td>
+                <td class="text-[#CC5500]">₦{{order.total_price}}</td>
+                <td>{{order.order_date}}</td>
+                <td>{{order.quantity}}</td>
                 <td><p class="p-[0.5rem_1rem] bg-burntOrange-600 rounded-lg inline-block">pending</p></td>
                 <td>view detail</td>
             </tr>
+            {% endfor %}
 
             <tr>
                 <td class="flex items-center max-sm:block">
@@ -176,8 +190,17 @@
     </table>
 
     <div class="mt-[1rem] text-right text-[0.8rem] font-[500] text-burntOrange-700">
-        <a href="">See All</a>
+        <a href="{% url "orders" %}">See All</a>
     </div>
+
+    {% else %}
+    <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
+        <h3> You have not ordered yet</h3>
+        <p>Start shopping now</p>
+        <a class="btn-primary p-[2rem_1rem] rounded" href="{% url "index" %}">Shop Now</a>
+    </div>
+    {% endif %}
+
 </section>
 
 <section class="mx-[1rem] bg-white rounded-lg shadow/90 p-[1rem] mb-[1rem]">
@@ -210,11 +233,12 @@
         <span>Delivery Information</span>
     </h1>
     
+    {% if addresses %}
     <table class="dash-table">
         <thead >
             <tr>
                 <th class="pb-[0.5rem]">Name</th>
-                <th class="pb-[0.5rem]">Address</th>
+                <th class="pb-[0.5rem]">Street</th>
                 <th class="pb-[0.5rem]">City</th>
                 <th class="pb-[0.5rem]">State</th>
                 <th class="pb-[0.5rem]">Phone Number</th>
@@ -222,13 +246,15 @@
         </thead>
 
         <tbody>
+            {% for address in addresses %}
             <tr>
-                <td>Adeniyi Peace</td>
-                <td>12 Aladeola</td>
-                <td>ketu ikosi</td>
-                <td>lagos</td>
-                <td>356576879887</td>
+                <td>{{address.full_name}}</td>
+                <td>{{address.street}}</td>
+                <td>{{address.city}}</td>
+                <td>{{address.state}}</td>
+                <td>{{address.phone}}</td>
             </tr>
+            {% endfor %}
 
             <tr>
                 <td>Adeniyi Peace</td>
@@ -241,7 +267,14 @@
     </table>
 
     <div class="mt-[1rem] text-right text-[0.8rem] font-[500] text-burntOrange-700">
-        <a href="">See All</a>
+        <a href="{% url "address_list" %}">See All</a>
     </div>
+    {% else %}
+    <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
+        <h3> You do not have a delivery address Yet</h3>
+        <p>Add one now</p>
+        <a class="btn-primary p-[2rem_1rem] rounded" href="{% url "add_address" %}">Add address</a>
+    </div>
+    {% endif %}
 </section>
 {% endblock content %}

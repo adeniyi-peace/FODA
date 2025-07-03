@@ -35,57 +35,68 @@
         </h1>
 
         <div class="min-w-[9rem]">
-            <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href=""> &plus; Add Address</a>
+            <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="{% url "add_address" %}"> &plus; Add Address</a>
         </div>
     </div>
     
     <hr>
 
+    {% if user.address.all %}
     <div>
+        {% for address in user.address.all %}
         <div class="flex items-center justify-between mt-[1rem]">
                 <div>
-                    <h4>Adeniyi Peace</h4>
-                    <p>356576879887</p>
+                    <h4>{{address.full_name}}</h4>
+                    <p>{{address.phone}}</p>
                     <address>
-                        12 Aladeola ketu ikosi Lagos dfngfng  cgngmgn xcherhc rs
+                        {{address.street}} {{address.city}} {{address.state}}
                     </address>
                 </div>
             
                 <div class="text-right pt-[1rem] text-sm min-w-[10rem]">
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="">Edit</a>
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="">Delete</a>
+                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="{% url "edit_address" address.pk %}">Edit</a>
+                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="{% url "delete_address" address.pk %}">Delete</a>
                 </div>
-            </div>
+        </div>
+        {% endfor %}
 
-            <div class="flex items-center justify-between mt-[1rem]">
-                <div>
-                    <h4>Adeniyi Peace</h4>
-                    <p>356576879887</p>
-                    <address>
-                        12 Aladeola ketu ikosi Lagos dfghjktjerew dfdhgh
-                    </address>
-                </div>
-            
-                <div class="text-right pt-[1rem] text-sm min-w-[10rem]">
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="">Edit</a>
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="">Delete</a>
-                </div>
+        <div class="flex items-center justify-between mt-[1rem]">
+            <div>
+                <h4>Adeniyi Peace</h4>
+                <p>356576879887</p>
+                <address>
+                    12 Aladeola ketu ikosi Lagos dfghjktjerew dfdhgh
+                </address>
             </div>
+        
+            <div class="text-right pt-[1rem] text-sm min-w-[10rem]">
+                <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="{% url "edit_address" 1 %}">Edit</a>
+                <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="{% url "delete_address" 1 %}">Delete</a>
+            </div>
+        </div>
 
-            <div class="flex items-center justify-between mt-[1rem]">
-                <div>
-                    <h4>Adeniyi Peace</h4>
-                    <p>356576879887</p>
-                    <address>
-                        12 Aladeola ketu ikosi Lagos
-                    </address>
-                </div>
-            
-                <div class="text-right pt-[1rem] text-sm min-w-[10rem]">
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="">Edit</a>
-                    <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="">Delete</a>
-                </div>
+        <div class="flex items-center justify-between mt-[1rem]">
+            <div>
+                <h4>Adeniyi Peace</h4>
+                <p>356576879887</p>
+                <address>
+                    12 Aladeola ketu ikosi Lagos
+                </address>
             </div>
+        
+            <div class="text-right pt-[1rem] text-sm min-w-[10rem]">
+                <a class="btn-primary p-[0.5rem_1rem] rounded-lg pl-[1rem]" href="{% url "edit_address" 1 %}">Edit</a>
+                <a class="btn-primary p-[0.5rem_1rem] rounded-lg" href="{% url "delete_address" 1 %}">Delete</a>
+            </div>
+        </div>
+        
+        {% else %}
+        <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
+            <h3> You do not have a delivery address Yet</h3>
+            <p>Add one now</p>
+            <a class="btn-primary p-[2rem_1rem] rounded" href="{% url "add_address" %}">Add address</a>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock content %}
