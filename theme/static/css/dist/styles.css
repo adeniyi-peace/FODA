@@ -10,12 +10,9 @@
     --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
-    --color-orange-600: oklch(64.6% 0.222 41.116);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
     --color-yellow-600: oklch(68.1% 0.162 75.834);
     --color-green-600: oklch(62.7% 0.194 149.214);
-    --color-indigo-500: oklch(58.5% 0.233 277.117);
-    --color-indigo-700: oklch(45.7% 0.24 277.023);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-400: oklch(70.7% 0.022 261.325);
@@ -50,6 +47,7 @@
     --color-burntOrange-500: #FF9D00;
     --color-burntOrange-600: #E47400;
     --color-burntOrange-700: #CC5500;
+    --color-burntOrange-800: #993C07;
   }
 }
 @layer base {
@@ -218,6 +216,9 @@
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
+  .m-\[1rem_auto\] {
+    margin: 1rem auto;
+  }
   .mx-\[1rem\] {
     margin-inline: 1rem;
   }
@@ -361,6 +362,13 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .border-solid {
+    --tw-border-style: solid;
+    border-style: solid;
+  }
+  .border-burntOrange-700 {
+    border-color: var(--color-burntOrange-700);
+  }
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
@@ -414,6 +422,9 @@
   }
   .p-\[1rem\] {
     padding: 1rem;
+  }
+  .p-\[2rem_1rem\] {
+    padding: 2rem 1rem;
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
@@ -514,9 +525,6 @@
   }
   .text-gray-900 {
     color: var(--color-gray-900);
-  }
-  .text-indigo-700 {
-    color: var(--color-indigo-700);
   }
   .text-red-400 {
     color: var(--color-red-400);
@@ -640,14 +648,14 @@
   }
   @media (hover: hover) {
     .btn-primary:hover {
-      background-color: var(--color-orange-600);
+      background-color: var(--color-burntOrange-600);
     }
   }
   .btn-primary:active {
     cursor: pointer;
   }
   .btn-primary:active {
-    background-color: var(--color-indigo-500);
+    background-color: var(--color-burntOrange-800);
   }
   .form-control .form-div {
     margin-bottom: 1rem;

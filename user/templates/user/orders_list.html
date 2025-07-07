@@ -74,6 +74,13 @@
         </tbody>
     </table>
     {% else %}
+    <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
+        <h3> You have no order history</h3>
+        <p>Start shopping now</p>
+        <div class="py-4">
+                <a class="btn-primary p-[0.5rem_1rem] rounded" href="{% url "index" %}">Shop Now</a>
+        </div>
+    </div>
     {% endif %}
 </section>
 

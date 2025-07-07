@@ -55,11 +55,14 @@ class EditUserProfileView(LoginRequiredMixin, View):
 
 class DeleteUserProfileView(LoginRequiredMixin, View):
     def get(self, request):
+        return render(request, "user/delete_profile.html")
+
+    def post(self, request):
         user = request.user
         logout(request)
         user.delete()
         messages.success(request, "Your have succefully deleted Your account")
-        return redirect(reverse(""))
+        return redirect(reverse("index"))
     
 
 

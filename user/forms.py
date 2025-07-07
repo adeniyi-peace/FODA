@@ -25,7 +25,7 @@ class EditUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "DOB", "first_name", "last_name"]
+        fields = ["email", "DOB", "first_name", "last_name", "phone"]
         widgets = {"email":forms.EmailInput({"readonly":True}),
                    "DOB":forms.DateInput({"type":"date"})
                 }

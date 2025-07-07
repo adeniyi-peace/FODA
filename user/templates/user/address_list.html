@@ -94,7 +94,9 @@
         <div class="m-[1rem_auto] text-center text-burntOrange-700 border border-solid border-burntOrange-700">
             <h3> You do not have a delivery address Yet</h3>
             <p>Add one now</p>
-            <a class="btn-primary p-[2rem_1rem] rounded" href="{% url "add_address" %}">Add address</a>
+            <div class="p-4">
+                <a class="btn-primary p-[0.5rem_1rem] rounded" href="{% url "add_address" %}">Add address</a>
+            </div>
         </div>
         {% endif %}
     </div>
