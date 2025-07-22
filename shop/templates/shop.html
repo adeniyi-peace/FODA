@@ -18,7 +18,8 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {% for item in food_items %}
       <div
-        class="group relative bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden">
+        class="group relative bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition duration-300 overflow-hidden food-item"
+        data-name="{{item.name}}" data-vendor="{{item.vendor}}">
 
         <!-- Image -->
         {% thumbnail item.image "400x300" crop="center" as im %}

@@ -1,52 +1,62 @@
-{% extends "base.html" %}
-{% load static %}
-{% load thumbnail %}
-
-{% block head %}
+{% extends "base.html" %} {% load static %} {% load thumbnail %} {% block head
+%}
 <link rel="stylesheet" href="{% static 'css/detail.css' %}" />
-{% endblock %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
+{% endblock %} {% block title %}Home{% endblock %} {% block content %}
 
 <!-- Hero Section -->
-<section class="bg-orange-50 py-12 ">
+<section class="bg-orange-50 py-12">
   <div class="container mx-auto max-w-7xl px-4 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold text-[#CC5500] mb-6">FODA</h1>
-    <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto my-auto">Enjoy authentic flavors from our kitchen to your
-      table.
-      Hand-crafted with love, just for you.</p>
+    <h1 class="text-4xl md:text-5xl font-extrabold text-[#CC5500] mb-6">
+      FODA
+    </h1>
+    <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto my-auto">
+      Enjoy authentic flavors from our kitchen to your table. Hand-crafted with
+      love, just for you.
+    </p>
 
-    <img src="media/local/nkwobi.png" alt="Nkwobi dish" class="">
+    <img src="media/local/nkwobi.png" alt="Nkwobi dish" class="" />
   </div>
 </section>
+{% comment %} Our vendors Carousel {% endcomment %}
 
 <!-- Testimonials Section -->
 <section class="bg-white py-12">
   <div class="container mx-auto max-w-7xl px-4">
-    <h2 class="text-3xl font-bold text-center text-[#CC5500] mb-10">What Our Customers Say</h2>
+    <h2 class="text-3xl font-bold text-center text-[#CC5500] mb-10">
+      What Our Customers Say
+    </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-      <div class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition">
+      <div
+        class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition"
+      >
         <div class="">
-          <img src="media/local/twins.png" alt="generated image of customer">
+          <img src="media/local/twins.png" alt="generated image of customer" />
         </div>
-        <p class="text-gray-800 italic">"This is the best product I've ever used!"</p>
+        <p class="text-gray-800 italic">
+          "This is the best product I've ever used!"
+        </p>
         <p class="mt-4 text-sm text-gray-600 text-right">- Happy Customer</p>
       </div>
-      <div class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition">
+      <div
+        class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition"
+      >
         <div class="">
-          <img src="media/local/female.png" alt="generated image of customer">
+          <img src="media/local/female.png" alt="generated image of customer" />
         </div>
-        <p class="text-gray-800 italic">"Amazing quality and fantastic support."</p>
+        <p class="text-gray-800 italic">
+          "Amazing quality and fantastic support."
+        </p>
         <p class="mt-4 text-sm text-gray-600 text-right">- Satisfied Client</p>
       </div>
-      <div class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition">
+      <div
+        class="bg-orange-100 p-6 rounded-xl shadow hover:shadow-md transition"
+      >
         <div class="">
-          <img src="media/local/male.png" alt="generated image of customer">
+          <img src="media/local/male.png" alt="generated image of customer" />
         </div>
-        <p class="text-gray-800 italic">"I keep coming back because of how good everything tastes!"</p>
+        <p class="text-gray-800 italic">
+          "I keep coming back because of how good everything tastes!"
+        </p>
         <p class="mt-4 text-sm text-gray-600 text-right">- Loyal Foodie</p>
       </div>
     </div>
@@ -57,9 +67,13 @@
 <section class="bg-orange-50 py-12">
   <div class="container mx-auto max-w-7xl px-4 text-center">
     <h2 class="text-3xl font-bold text-[#CC5500] mb-4">Don't Miss Out!</h2>
-    <p class="text-lg text-gray-700 mb-6">Grab your favorite meals now and enjoy exclusive offers just for you.</p>
-    <a href="{% url 'shop' %}"
-      class="inline-block bg-[#CC5500] hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300">
+    <p class="text-lg text-gray-700 mb-6">
+      Grab your favorite meals now and enjoy exclusive offers just for you.
+    </p>
+    <a
+      href="{% url 'shop' %}"
+      class="inline-block bg-[#CC5500] hover:bg-orange-700 text-white font-semibold px-6 py-3 rounded-lg transition duration-300"
+    >
       Shop Now
     </a>
   </div>
