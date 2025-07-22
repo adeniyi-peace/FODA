@@ -165,6 +165,8 @@ class Address(models.Model):
     state = models.CharField(max_length=50)
     country = models.CharField( max_length=50)
 
+    def __str__(self):
+        return f"{self.last_name} {self.first_name} Address"
     
     class Meta:
         verbose_name = "Address"
