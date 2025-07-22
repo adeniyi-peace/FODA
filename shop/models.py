@@ -44,13 +44,13 @@ STATUS_ORDER = {
     
 class Order(models.Model):
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50, null=True)
+    last_name = models.CharField(max_length=50, null=True)
     phone = PhoneNumberField(region="NG", null=True)
-    street = models.CharField( max_length=50,)
-    city = models.CharField( max_length=50)
-    state = models.CharField(max_length=50)
-    country = models.CharField( max_length=50)
+    street = models.CharField( max_length=50, null=True,)
+    city = models.CharField( max_length=50, null=True)
+    state = models.CharField(max_length=50, null=True)
+    country = models.CharField( max_length=50, null=True)
 
     user = models.ForeignKey('user.User', related_name='order', on_delete=models.CASCADE, null=True)
     # quantity = models.PositiveIntegerField(default=1)
