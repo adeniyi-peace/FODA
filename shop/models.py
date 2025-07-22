@@ -64,7 +64,7 @@ class Order(models.Model):
         ordering = ["-order_date"]
     
     def __str__(self):
-        return f"Order #{self.id} - {self.get_full_name} - {self.status}"
+        return f"Order #{self.id} - {self.get_full_name()} - {self.status}"
     
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -82,7 +82,7 @@ class Order(models.Model):
         The order status will be the "lowest" status among all its items,
         unless all items have reached a final status like DELIVERED.
         """
-        order_items = self.order_items.all()
+        order_items = self.order_item.all()
         if not order_items:
             # If no items, status remains pending or can be set to cancelled, etc.
             # Define your desired behavior for empty orders.
@@ -142,12 +142,12 @@ class Order(models.Model):
 
 
 
-class OrderItems(models.Model):
+class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_item")
     food = models.ForeignKey(Food, related_name='orders', on_delete=models.CASCADE)
-    vendor = models.ForeignKey("vendor.Vendor", related_name='orders', on_delete=models.SET_NULL, null=True)
+    vendor = models.ForeignKey("vendor.Vendor", related_name='orders', on_delete=models.SET_NULL, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=2, choices=Status, default=Status.PENDING)
     
     def __str__(self):
@@ -158,8 +158,10 @@ class OrderItems(models.Model):
 
 
     def save(self, *args, **kwargs):
+        self.vendor = self.food.vendor
         super().save(*args, **kwargs) # Save the OrderItem first
 
         # After saving the item, update the overall order status
         # This will trigger the `update_overall_status` method on the related Order
+        
         self.order.update_overall_status()

@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from django.forms.models import model_to_dict
 
 from .cart import Cart
-from shop.models import Food, Order, OrderItems
+from shop.models import Food, Order, OrderItem
 from user.models import Address
 from user.forms import Addressform
 
@@ -101,9 +101,9 @@ def checkout(request):
             order = Order.objects.create(**address_dict, user=user,) # add paid=True after implementing payment logic
 
             for food in cart:
-                OrderItems.objects.create(
+                OrderItem.objects.create(
                     order=order, food=food["food"], price=food["price"], 
-                    quantity=food["quantity"], vendor=food["food"].vendor
+                    quantity=food["quantity"],
                 )
 
             # payment logic here
