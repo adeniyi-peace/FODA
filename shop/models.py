@@ -16,6 +16,8 @@ class Food(models.Model):
     
     def __str__(self):
         return self.name
+    def __str__(self):
+        return f"{self.name} - {self.vendor.name}"
 
 class Customer(models.Model):
     user = models.OneToOneField('user.User', on_delete=models.CASCADE)
