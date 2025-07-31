@@ -96,11 +96,16 @@
               <td>{{ order.order_date }}</td>
               <td>{{ order.get_total_quantity }}</td>
               <td>
-                <span class="inline-block px-2 py-1 rounded text-white text-xs font-medium {% if order.status == 'pending' %}bg-orange-500{% elif order.status == 'confirmed' %}bg-green-600{% else %}bg-red-500{% endif %}">
-                  {{ order.status }}
+                <span class="inline-block px-2 py-1 rounded text-white text-xs font-medium {% if order.get_status_display == 'Pending' %}bg-burntOrange-700{% elif order.get_status_display == 'Confirmed' %}bg-green-600{% elif order.get_status_display == 'Canceled' %}bg-red-500{% else %}bg-gray-500{% endif %}">
+                  {{ order.get_status_display }}
                 </span>
               </td>
-              <td><a href="#" class="text-blue-600 text-sm">View</a></td>
+              <td><a href="#" class="text-blue-600 text-sm">
+                <svg class="fill-burntOrange-700 hover:fill-burntOrange-600 active:fill-burntOrange-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="inline-block align-middle">
+                  <path d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 
+                        13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z"/>
+                </svg>
+              </a></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -117,8 +122,9 @@
   <!-- Addresses -->
   <div class="bg-white rounded-2xl shadow-md p-6">
     <div class="flex items-center gap-4 mb-4">
-        <svg class="h-8 w-8 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M3 7v10a1 1 0 0 0 1 1h4v2a1 1 0 0 0 1.707.707L12 18h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1zm9 9l-2.293 2.293A1 1 0 0 1 9 18v-2H4V8h16v8H12z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#CC5500" width="32" height="32" class="svg-icon">
+            <path d="M12 2C8.13401 2 5 5.13401 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86599-3.134-7-7-7zm0 9.5c-1.3807 
+            0-2.5-1.1193-2.5-2.5s1.1193-2.5 2.5-2.5 2.5 1.1193 2.5 2.5-1.1193 2.5-2.5 2.5z"/>
         </svg>
         <h2 class="text-xl font-bold text-gray-700">Delivery Information</h2>
     </div>

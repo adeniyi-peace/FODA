@@ -60,7 +60,7 @@
 
   .order-table{
     th{
-      @apply border-b border-solid border-gray-400 text-left text-gray-400 font-medium 
+      @apply border-b border-solid border-gray-400 text-left text-gray-800 font-medium 
     }
 
     @media (max-width: 640px) { /* Example breakpoint for mobile */
@@ -97,7 +97,7 @@
   }
 
 
-    @apply w-full border-spacing-y-[1rem] border-separate
+    @apply w-full border-spacing-y-[1rem] border-separate  table-auto text-sm text-left text-gray-600;
   }
 
 }
