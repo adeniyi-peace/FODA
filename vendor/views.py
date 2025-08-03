@@ -7,7 +7,7 @@ from django.utils import timezone
 import json
 
 from shop.models import OrderItem, Food
-from vendor.models import Vendor
+from vendor.models import Vendor, BusinessHour
 
 
 def is_vendor_user(user):
@@ -73,3 +73,24 @@ def vendor_dashboard(request):
     }
 
     return render(request, 'templates/vendors_dashboard.html', context)
+
+
+def vendor_business_hours(request):
+    vendor = request.user.vendor
+    business_hours = vendor.business_hour.all()
+
+    context = {
+        "business_hours":business_hours
+    }
+
+    return render(request, "vendor/business_hours.html", context=context)
+    
+def vendor_food(request):
+    vendor = request.user.vendor
+    foods = Food.objects.filter(vendor=vendor)
+
+    context = {
+        "food":foods
+    }
+
+    return render(request, "vendor/food_list.html", context=context)
