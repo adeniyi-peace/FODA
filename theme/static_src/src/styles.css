@@ -27,7 +27,24 @@
 
   .btn-secondary {
     @apply bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg;
-  }  
+  }
+  
+  .toggle-switch {
+    @apply relative inline-block w-11 h-5;
+
+    input[type="checkbox"]{
+      @apply appearance-none w-11 h-5 bg-slate-100 rounded-full checked:bg-burntOrange-700 cursor-pointer transition-colors duration-300;
+    }
+
+    label{
+      @apply absolute top-0 left-0 w-5 h-5 bg-white rounded-full border border-slate-300 shadow-sm transition-transform duration-300  cursor-pointer
+    }
+
+    input[type="checkbox"]:checked + label{
+      @apply translate-x-6 border-slate-800
+    }
+  }
+
 
   .form-control{
 

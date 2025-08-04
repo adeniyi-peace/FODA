@@ -19,7 +19,7 @@ class Vendor(models.Model):
 
         today_hours = self.business_hour.filter(day=day)[0]
 
-        if not today_hours or today_hours.is_closed:
+        if not today_hours or not today_hours.is_open:
             return False
         
         return today_hours.open_time <= time <= today_hours.close_time
@@ -39,12 +39,12 @@ class BusinessHour(models.Model):
     day = models.CharField(max_length=50, choices=Days)
     open_time = models.TimeField(auto_now=False, auto_now_add=False)
     close_time = models.TimeField(auto_now=False, auto_now_add=False)
-    is_close = models.BooleanField(default=False)
+    is_open = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("vendor", "day")
-        Verbose_Name = "Vendor Business Hour"
-        Verbose_Name_plural = "Vendor Business Hours"
+        verbose_name = "Vendor Business Hour"
+        verbose_name_plural = "Vendor Business Hours"
         ordering = ["vendor", "day"]
 
     def __str__(self):

@@ -1,13 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, F
 from django.db.models.functions import TruncDay, TruncMonth
 from datetime import timedelta
 from django.utils import timezone
+from django.contrib import messages
 import json
 
 from shop.models import OrderItem, Food
 from vendor.models import Vendor, BusinessHour
+from .forms import BusinessHourFormSet
 
 
 def is_vendor_user(user):
@@ -74,13 +77,27 @@ def vendor_dashboard(request):
 
     return render(request, 'templates/vendors_dashboard.html', context)
 
-
+@login_required
 def vendor_business_hours(request):
     vendor = request.user.vendor
     business_hours = vendor.business_hour.all()
 
+    if request.METHOD == "POST":
+        formset = BusinessHourFormSet(
+            request.POST, request.FILES, instance=Vendor, queryset=business_hours
+        )
+
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, "Schedule Updated Succefully!")
+            return redirect(reverse())
+    
+    else:
+        formset = BusinessHourFormSet(instance=Vendor, queryset=business_hours)
+
     context = {
-        "business_hours":business_hours
+        "business_hours":business_hours,
+        "formset":formset
     }
 
     return render(request, "vendor/business_hours.html", context=context)

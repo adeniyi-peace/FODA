@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Open hours{% endblock title %}
+
+{% block content %}
+<section class="max-w-150 px-6 mx-auto">
+    <header>
+        <!-- svg goes here -->
+         <div>
+            <h1 class=" text-2xl font-semibold">Business hours</h1>
+            <p class="text-sm text-gray-400">Configure your standard operating hours for you business</p>
+         </div>
+    </header>
+
+    <main>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            {% for form in formset %}
+            <div>
+                <div class="toggle-switch">
+                    <input checked id="switch-component" type="checkbox" class="peer" />
+                    {{ form.is_open }}
+                    <label for="{{ form.is_open.id_for_label }}" class="">
+                    </label>
+                </div>
+                
+                <label for="{{ form.is_open.id_for_label }}">
+                    {{ form.is_open.label }}
+                </label>
+
+                
+                <div>
+                    {{ form.open_time }}
+
+                    <h3>To</h3>
+
+                    {{ form.close_time }}
+                </div>
+            
+            </div>
+            {% endfor %}
+
+            <div class="flex items-center gap-4 justify-between max-w-150 px-6 mx-auto text-sm mb-4">
+                
+
+                <div class="flex gap-2 items-center">
+                    <div class="toggle-switch">
+                        <input checked id="switch-component" type="checkbox" class="" />
+                        <label for="switch-component" >
+                        </label>
+                    </div>
+
+                    <label for="test" class="font-semibold">Monday</label>
+                </div>
+
+                
+                <div class="flex gap-4 items-center">
+                    <input type="time" name="" id="" class="ring-2 ring-solid ring-gray-400 rounded px-2 py-1 focus:outline-none focus:border-none focus-within:ring-2 focus-within:ring-burntOrange-700">
+
+                    <h3>To</h3>
+
+                    <input type="time" name="" id="" class="ring-2 ring-solid ring-gray-400 rounded px-2 py-1 focus:outline-none focus:border-none focus-within:ring-2 focus-within:ring-burntOrange-700">
+                </div>
+
+            
+            </div>
+
+            <div class="flex items-center gap-4 justify-between max-w-150 px-6 mx-auto text-sm mb-4">
+                
+
+                <div class="flex gap-2 items-center">
+                    <div class="toggle-switch">
+                        <input checked id="switch-component1" type="checkbox" class="" />
+                        <label for="switch-component1" >
+                        </label>
+                    </div>
+
+                    <label for="test" class="font-semibold">Tuesday</label>
+                </div>
+
+                
+
+                <div>
+                    <div clas="flex gap-4 w-75 bg-gray-400">
+                        <!-- moon icon -->
+                        <h1>Closed</h1>
+                    </div>
+                </div>
+            
+            </div>
+
+            <div class="text-sm flex gap-4 justify-right">
+                <a href="">Back to dashboard</a>
+                <button class="btn-primary rounded p-2" type="submit"><a href="">Save Schedule</a></button>
+            </div>
+        </form>
+
+    </main>
+</section>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    
+</script>
+{% endblock scripts %}
