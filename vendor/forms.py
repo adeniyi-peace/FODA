@@ -5,6 +5,15 @@ class BusinessHourForm(forms.ModelForm):
     class Meta:
         model = BusinessHour
         fields = ["day", "is_open", "open_time", "close_time"]
+        widgets = {
+            "day":forms.HiddenInput(),
+            "open_time":forms.TimeInput(attrs={
+                "class":"ring-2 ring-solid ring-gray-400 rounded px-2 py-1 focus:outline-none focus:border-none focus-within:ring-2 focus-within:ring-burntOrange-700"
+            }),
+            "close_time":forms.TimeInput(attrs={
+                "class":"ring-2 ring-solid ring-gray-400 rounded px-2 py-1 focus:outline-none focus:border-none focus-within:ring-2 focus-within:ring-burntOrange-700"
+            })
+        }
 
 
 BaseOpenFormset = forms.inlineformset_factory(
