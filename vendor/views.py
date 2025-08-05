@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, F
 from django.db.models.functions import TruncDay, TruncMonth
@@ -82,7 +84,7 @@ def vendor_business_hours(request):
     vendor = request.user.vendor
     business_hours = vendor.business_hour.all()
 
-    if request.METHOD == "POST":
+    if request.method == "POST":
         formset = BusinessHourFormSet(
             request.POST, request.FILES, instance=Vendor, queryset=business_hours
         )
@@ -102,12 +104,40 @@ def vendor_business_hours(request):
 
     return render(request, "vendor/business_hours.html", context=context)
     
-def vendor_food(request):
+def vendor_food_list(request):
     vendor = request.user.vendor
     foods = Food.objects.filter(vendor=vendor)
+    # foods = Food.objects.all()
+
+    if request.method == "POST":
+        id = request.POST.get("id","")
+        operation = request.POST.get("method", "")
+        
+        try:
+            # add vendor later
+            food = Food.objects.get(id=id)
+            name = food.name
+
+            if operation == "true":
+                food.is_sale = True
+                food.save()
+                return JsonResponse({"success":True, "message":f"{name} is now available in shop"})
+            
+            elif operation == "false":
+                food.is_sale = False
+                food.save()
+                return JsonResponse({"success":True, "message":f"{name} has been removed from shop"})
+            
+            else:
+                return JsonResponse(
+                    {"success":False, "message":f"An error occured while updating {name} availability"}
+                )
+
+        except ObjectDoesNotExist:
+            return JsonResponse({"success":False, "message":"The food does not exist, reload the page to fix error."})
 
     context = {
-        "food":foods
+        "foods":foods
     }
 
     return render(request, "vendor/food_list.html", context=context)
