@@ -168,7 +168,7 @@ class LogoutView(View):
         logout(request)
 
         #back to homepage
-        return redirect()
+        return redirect("/")
 
 
 class UserEmailPasswordResetView(SuccessMessageMixin, PasswordResetView):
