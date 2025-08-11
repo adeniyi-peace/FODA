@@ -3,7 +3,8 @@ from django.conf import settings
 from sorl.thumbnail import ImageField
 
 class Vendor(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vendor',null=True, blank=True)
+    vendor = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vendor',null=True, blank=True)
+    email = models.EmailField(unique=True,null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     location = models.CharField(max_length=255)

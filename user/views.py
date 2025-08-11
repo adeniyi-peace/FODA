@@ -21,6 +21,7 @@ class DashboardView(LoginRequiredMixin, View):
             "orders":orders,
             "addresses": addresses
         }
+        
         return render(request, "user/dashboard.html", context=context)
     
 
