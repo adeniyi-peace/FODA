@@ -1,5 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
+
 from .models import Food
+
+from vendor.utils import get_current_day_and_time
+from vendor.models import Vendor
 # Create your views here.
 
 
@@ -29,3 +34,35 @@ def food_detail(request, food_id):
         'food_item': food_item
     }
     return render(request, 'detail.html', context)
+
+def vendors_list(request):
+    day, time = get_current_day_and_time()
+    model = Vendor.objects.all()
+    
+    paginator = Paginator(model, 1)
+
+    page_number = request.GET.get("page")
+
+    try:
+        vendors = paginator.get_page(page_number)
+    except EmptyPage:
+        vendors = paginator.get_page(paginator.num_pages)
+    except InvalidPage:
+        vendors = paginator.get_page(1)
+    
+    context = {
+        "vendors":vendors
+    }
+
+    return render(request, "shop/vendors_list.html", context)
+
+def vendor_food_list(request, slug):
+    # vendor = get_object_or_404(Vendor, slug=slug)
+    # food = vendor.foods.all()
+
+    context = {
+        # "vendor":vendor,
+        # "food":food,
+    }
+
+    return render(request, "shop/vendor_food_list.html", context)

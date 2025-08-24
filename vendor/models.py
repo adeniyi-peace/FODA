@@ -1,7 +1,8 @@
 from django.db import models
 from django.conf import settings
+from django.utils.text import slugify
 from sorl.thumbnail import ImageField
-from .utils import get_current_day_and_time
+from .utils import get_current_day_and_time, get_next_day
 
 class Vendor(models.Model):
     vendor = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vendor',null=True, blank=True)
@@ -11,6 +12,7 @@ class Vendor(models.Model):
     location = models.CharField(max_length=255)
     contact_info = models.CharField(max_length=100)
     image = ImageField(upload_to='vendors/', blank=True, null=True)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.name
@@ -24,6 +26,35 @@ class Vendor(models.Model):
             return False
         
         return today_hours.open_time <= time <= today_hours.close_time
+    
+    def next_open(self):
+        # Loop through a range of 7 till we get the next business hour
+        for i in range(7):
+            """
+            Get the next open day
+            if i == 0, next open day is today
+            if i == 1, next day is tommorow
+            """
+            day, time = get_next_day(number=i)
+
+            # Filters through the related business hour linked to Vendor 
+            # checking the day and if it is opened for that day
+            hours = self.business_hour.filter(day=day, is_open=True).first()
+
+            if hours:
+                if i == 0 and time < hours.open_time:
+                    return f"OPENS TODAY AT {hours.open_time}".upper()
+                
+                elif i == 1:
+                    return f"OPENS TOMMOROW AT {hours.open_time}".upper()
+                
+                elif i > 1:
+                    return f"OPENS ON {hours.get_day_display} AT {hours.open_time}".upper()
+                    
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class BusinessHour(models.Model):
