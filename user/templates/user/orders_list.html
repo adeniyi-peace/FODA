@@ -19,7 +19,7 @@
     Order History
   </h1>
 
-  {% if user.order.all %}
+  {% if orders %}
   <div class="overflow-x-auto">
     <table class="order-table">
       <thead>
@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-100">
-        {% for order in user.order.all %}
+        {% for order in orders %}
         <tr class="hover:bg-gray-50 transition">
           <td class="font-medium t-row" data-label="Order #:">#{{order.id}}</td>
           <td class="text-burntOrange-700 t-row" data-label="Price:">₦{{order.get_total_price}}</td>
@@ -84,6 +84,25 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="pagination flex gap-2 justify-center mt-4 text-sm items-center">
+      <span class="step-links flex gap-2 items-center">
+          {% if page_obj.has_previous %}
+              <a href="?{% if search %}search={{search}}&{% endif %}page=1" class="py-1 px-3 rounded text-white bg-burntOrange-700">&laquo; First</a>
+              <a href="?{% if search %}search={{search}}&{% endif %}page={{ page_obj.previous_page_number }}" class="py-1 px-3 rounded text-white bg-burntOrange-700">Previous</a>
+          {% endif %}
+
+          <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+
+          {% if page_obj.has_next %}
+              <a href="?{% if search %}search={{search}}&{% endif %}page={{ page_obj.next_page_number }}" class="py-1 px-3 rounded text-white bg-burntOrange-700">Next</a>
+              <a href="?{% if search %}search={{search}}&{% endif %}page={{ page_obj.paginator.num_pages }}" class="py-1 px-3 rounded text-white bg-burntOrange-700">Last &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+
   </div>
   {% else %}
   <div class="mt-6 p-6 text-center text-burntOrange-700 border border-dashed border-burntOrange-700 rounded-lg">
