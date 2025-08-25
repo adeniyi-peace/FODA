@@ -8,6 +8,7 @@ class Vendor(models.Model):
     vendor = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vendor',null=True, blank=True)
     email = models.EmailField(unique=True,null=True, blank=True)
     name = models.CharField(max_length=100)
+    password = models.CharField(max_length=255,blank=True, null=True)
     description = models.TextField()
     location = models.CharField(max_length=255)
     contact_info = models.CharField(max_length=100)
