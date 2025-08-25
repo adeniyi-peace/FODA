@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load thumbnail %}
 
 {% block title %}Vendors{% endblock title %}
 
@@ -12,7 +13,7 @@
                 <img src={% static "shop/shop-store-icon.svg" %} alt="vendors" class="size-12">
                 <p>Vendor</p>
             </div>
-            <div class="p-4 rounded-xl bg-blue-100 text-center font-semibold"><a href="">
+            <div><a href="{% url "shop" %}" class="p-4 rounded-xl bg-blue-100 text-center font-semibold inline-block">
                 <img src="{% static "shop/food-icon.svg" %}" alt="food-icon" class="size-12">
                 <p>Food</p>
             </a></div>
@@ -23,23 +24,27 @@
         <h1 class="mb-4 font-semibold">All Vendors</h1>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-auto">
-            <a href="" class="rounded-xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg/50">
-                <div class="relative w-full h-3/5 max-sm:h-2/3 rounded-xl">
-                    <img src="https://as2.ftcdn.net/jpg/04/91/68/89/1000_F_491688945_9lCRX2N6XQVeyJbnM9tWjm2TMTWIiogL.jpg" alt="" class="object-cover size-full rounded-xl">
+            {% for vendor in vendors %}
+            <a href="{% url "vendor_foods_list" vendor.slug %}" class="rounded-xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg/50">
+                <div class="relative w-full h-48 rounded-xl">
+                    {% thumbnail vendor.image "400x300"  as im %}
+                    <img src="{{ im.url }}" alt="{{ vendor.name }}" class="object-cover size-full rounded-xl">
+                    {% endthumbnail %}
                     <div class="absolute top-2 left-2 bg-burntOrange-500 size-6 rounded-full text-center shadow hover:scale-110 transition">&hearts;</div>
-                    <div class="hidden rounded-xl absolute bg-gradient-to-b from-black/20 to-black/70 inset-0">
-                        <span class="text-white absolute top-1/2 left-1/2 translate -translate-x-1/2 -translate-y-1/2 text-5xl">closed</span>
+                    <div class="{% if vendor.is_open %} hidden {% endif %} rounded-xl absolute bg-gradient-to-b from-black/20 to-black/70 inset-0">
+                        <span class="text-white absolute top-1/2 left-1/2 translate -translate-x-1/2 -translate-y-1/2 text-5xl">{{ vendor.next_open }}</span>
                     </div>
                 </div>
 
                 <div class="space-y-2 px-2">
-                    <h1 class="text-xl font-semibold">name</h1>
-                    <h2 class="text-sm text-gray-600">description</h2>
+                    <h1 class="text-xl font-semibold">{{ vendor.name }}</h1>
+                    <h2 class="text-sm text-gray-600">{{ vendor.description }}</h2>
                     <h4 class="text-sm text-gray-600">4.5 <span class="text-yellow-500">&starf;</span></h4>
                 </div>
             </a>
+            {% endfor %}
 
-
+            <!-- dummy data -->
             <a href="" class="rounded-xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg/50">
                 <div class="relative w-full h-3/5 max-sm:h-2/3 rounded-xl">
                     <img src="https://as2.ftcdn.net/jpg/04/91/68/89/1000_F_491688945_9lCRX2N6XQVeyJbnM9tWjm2TMTWIiogL.jpg" alt="" class="object-cover size-full rounded-xl">
@@ -102,6 +107,7 @@
                     <h4 class="text-sm text-gray-600">4.5 <span class="text-yellow-500">&starf;</span></h4>
                 </div>
             </a>
+            <!-- dummy data ends here -->
         </div>
 
         <div class="pagination flex gap-2 justify-center mt-4 text-sm items-center">

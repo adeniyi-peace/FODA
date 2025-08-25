@@ -13,7 +13,7 @@ class Vendor(models.Model):
     location = models.CharField(max_length=255)
     contact_info = models.CharField(max_length=100)
     image = ImageField(upload_to='vendors/', blank=True, null=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, null=True)
 
     def __str__(self):
         return self.name
@@ -21,7 +21,7 @@ class Vendor(models.Model):
     def is_open(self):
         day, time = get_current_day_and_time()
 
-        today_hours = self.business_hour.filter(day=day)[0]
+        today_hours = self.business_hour.filter(day=day).first()
 
         if not today_hours or not today_hours.is_open:
             return False

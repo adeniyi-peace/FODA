@@ -41,7 +41,7 @@ def get_next_day(number, timezone_name="Africa/lagos"):
     next_day = day_mapping.get(day)
     current_time = now.time()
 
-    return current_day, current_time
+    return next_day, current_time
 # creating password
 
 
