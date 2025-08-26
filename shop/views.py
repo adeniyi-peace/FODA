@@ -65,7 +65,7 @@ def vendors_list(request):
 def vendor_food_list(request, slug):
     day, time = get_current_day_and_time()
     vendor = get_object_or_404(Vendor, slug=slug)
-    foods = vendor.foods.all()
+    foods = vendor.foods.filter(is_sale=True)
     week_day = vendor.business_hour.filter(day=day).first()
 
     if request.method == "POST":

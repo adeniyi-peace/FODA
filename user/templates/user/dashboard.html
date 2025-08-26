@@ -137,7 +137,7 @@
           </thead>
           <tbody>
             {% for addr in addresses %}
-              <tr class="border-b"><td>{{ addr.full_name }}</td><td>{{ addr.street }}</td><td>{{ addr.city }}</td><td>{{ addr.state }}</td><td>{{ addr.phone }}</td></tr>
+              <tr class="border-b"><td>{{ addr.full_name }}</td><td>{{ addr.street }}</td><td>{{ addr.city }}</td><td>{{ addr.state }}</td><td>{{ addr.phone.as_national }}</td></tr>
             {% endfor %}
           </tbody>
         </table>
