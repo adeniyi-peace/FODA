@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -131,21 +131,22 @@ def vendor_dashboard(request):
 
 
 def vendor_business_hours(request):
-    vendor = request.user.vendor
+    vendor = get_object_or_404(Vendor, id=1)
     business_hours = vendor.business_hour.all()
 
     if request.method == "POST":
         formset = BusinessHourFormSet(
-            request.POST, request.FILES, instance=Vendor, queryset=business_hours
+            request.POST, request.FILES, instance=vendor, queryset=business_hours
         )
+        print(formset.forms)
 
         if formset.is_valid():
             formset.save()
             messages.success(request, "Schedule Updated Successfully!")
-            return redirect(reverse())
+            return redirect(reverse('vendor_dashboard'))
     
     else:
-        formset = BusinessHourFormSet(instance=Vendor, queryset=business_hours)
+        formset = BusinessHourFormSet(instance=vendor, queryset=business_hours)
 
     context = {
         "business_hours":business_hours,
@@ -155,7 +156,8 @@ def vendor_business_hours(request):
     return render(request, "vendor/business_hours.html", context=context)
     
 def vendor_food_list(request):
-    vendor = request.user.vendor
+    # vendor = request.user.vendor
+    vendor = get_object_or_404(Vendor, id=1)
     foods = Food.objects.filter(vendor=vendor)
     # foods = Food.objects.all()
 

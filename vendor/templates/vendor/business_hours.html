@@ -25,16 +25,18 @@
             {{ formset.management_form }}
 
             {% for form in formset %}
+            {{ form.errors }}
             <div class="form-item flex items-center gap-4 justify-between max-w-150 px-6 mx-auto text-sm mb-4">
+                {{ form.id }}
+                {{ form.day }}
                 <div class="flex gap-2 items-center">
                     <div class="toggle-switch">
-                        <input checked id="switch-component" type="checkbox" class="peer" />
                         {{ form.is_open }}
                         <label for="{{ form.is_open.id_for_label }}" class="">
                         </label>
                     </div>
 
-                    <label for="{{ form.is_open.id_for_label }}">
+                    <label for="{{ form.is_open.id_for_label }}" class="font-semibold">
                         {{ form.is_open.label }}
                     </label>
                 </div>
@@ -143,8 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Select all the checkboxes for the 'is_open' field.
     // The attribute selector `[id$="-is_open"]` is a robust way to select
     // all elements where the ID ends with "-is_open"
-    // const openCheckboxes = document.querySelectorAll('input[id$="-is_open"]');
-    const openCheckboxes = document.querySelectorAll('input[id$="switch-component"]');
+    const openCheckboxes = document.querySelectorAll('input[id$="-is_open"]');
+    // const openCheckboxes = document.querySelectorAll('input[id$="switch-component"]');
 
     function toggleTimeFields(checkbox) {
         // Find the parent container for this specific form

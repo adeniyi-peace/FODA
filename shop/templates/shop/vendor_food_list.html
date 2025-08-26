@@ -21,8 +21,8 @@
     </header>
 
      <div class="w-7/8 shadow-lg p-4 my-4 mx-auto rounded-xl">
-        <h1 class="font-semibold">Opening Time, <span class="text-green-800">Tuesday</span></h1>
-        <p class="text-sm text-gray-600">9:00am - 9:00pm</p>
+        <h1 class="font-semibold">Opening Time, <span class="text-green-800">{{ week_day.get_day_display }}</span></h1>
+        <p class="text-sm text-gray-600">{{ week_day.open_time|time:'g:i A' }} - {{ week_day.close_time|time:'g:i A' }}</p>
     </div>
 
     <main class="w-7/8 shadow-lg p-4 my-4 mx-auto rounded-xl">

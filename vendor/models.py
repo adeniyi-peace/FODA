@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from sorl.thumbnail import ImageField
+
+from datetime import time
 from .utils import get_current_day_and_time, get_next_day
 
 class Vendor(models.Model):
@@ -44,13 +46,13 @@ class Vendor(models.Model):
 
             if hours:
                 if i == 0 and time < hours.open_time:
-                    return f"OPENS TODAY AT {hours.open_time}".upper()
+                    return f"OPENS TODAY AT {hours.open_time.strftime('%I:%M %p')}".upper()
                 
                 elif i == 1:
-                    return f"OPENS TOMMOROW AT {hours.open_time}".upper()
+                    return f"OPENS TOMMOROW AT {hours.open_time.strftime('%I:%M %p')}".upper()
                 
                 elif i > 1:
-                    return f"OPENS ON {hours.get_day_display} AT {hours.open_time}".upper()
+                    return f"OPENS ON {hours.get_day_display} AT {hours.open_time.strftime('%I:%M %p')}".upper()
                     
     
     def save(self, *args, **kwargs):
@@ -64,22 +66,22 @@ class BusinessHour(models.Model):
         MONDAY = "MON", "Monday" 
         TUESDAY = "TUE", "Tuesday"
         WEDNESDAY = "WED", "Wednesday"
-        THURSDAY = "THU" "Thursday"
+        THURSDAY = "THU", "Thursday"
         FRIDAY = "FRI", "Friday"
         SATURDAY = "SAT", "Saturday"
 
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name="business_hour")
     day = models.CharField(max_length=50, choices=Days)
-    open_time = models.TimeField(auto_now=False, auto_now_add=False)
-    close_time = models.TimeField(auto_now=False, auto_now_add=False)
+    open_time = models.TimeField(default=time(9, 0, 0), auto_now=False, auto_now_add=False)
+    close_time = models.TimeField(default=time(16, 0, 0), auto_now=False, auto_now_add=False)
     is_open = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("vendor", "day")
         verbose_name = "Vendor Business Hour"
         verbose_name_plural = "Vendor Business Hours"
-        ordering = ["vendor", "day"]
+        ordering = ["vendor", "id"]
 
     def __str__(self):
-        return f"{self.vendor.name} - {self.vendor.get_day_display()}"
+        return f"{self.vendor.name} - {self.get_day_display()}"
     

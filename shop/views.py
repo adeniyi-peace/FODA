@@ -63,8 +63,10 @@ def vendors_list(request):
 
 @csrf_exempt
 def vendor_food_list(request, slug):
+    day, time = get_current_day_and_time()
     vendor = get_object_or_404(Vendor, slug=slug)
     foods = vendor.foods.all()
+    week_day = vendor.business_hour.filter(day=day).first()
 
     if request.method == "POST":
         cart = Cart(request)
@@ -93,6 +95,7 @@ def vendor_food_list(request, slug):
     context = {
         "vendor":vendor,
         "foods":foods,
+        "week_day":week_day,
     }
 
     return render(request, "shop/vendor_food_list.html", context)
