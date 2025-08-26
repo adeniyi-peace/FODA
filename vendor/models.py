@@ -52,7 +52,9 @@ class Vendor(models.Model):
                     return f"OPENS TOMMOROW AT {hours.open_time.strftime('%I:%M %p')}".upper()
                 
                 elif i > 1:
-                    return f"OPENS ON {hours.get_day_display} AT {hours.open_time.strftime('%I:%M %p')}".upper()
+                    return f"OPENS ON {BusinessHour.Days(hours.day).label} AT {hours.open_time.strftime('%I:%M %p')}".upper()
+
+        return  f"BUSINESS IS CLOSED"
                     
     
     def save(self, *args, **kwargs):

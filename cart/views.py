@@ -110,7 +110,7 @@ def checkout(request):
             
             messages.success(request, "Your Order has been Created")
 
-            return redirect(reverse("index"))
+            return redirect(reverse("shop"))
         
         else:
             messages.error(request, "Pick an Address or Add one")

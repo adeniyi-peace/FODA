@@ -131,14 +131,14 @@ def vendor_dashboard(request):
 
 
 def vendor_business_hours(request):
-    vendor = get_object_or_404(Vendor, id=1)
+    # vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
     business_hours = vendor.business_hour.all()
 
     if request.method == "POST":
         formset = BusinessHourFormSet(
             request.POST, request.FILES, instance=vendor, queryset=business_hours
         )
-        print(formset.forms)
 
         if formset.is_valid():
             formset.save()
@@ -156,10 +156,9 @@ def vendor_business_hours(request):
     return render(request, "vendor/business_hours.html", context=context)
     
 def vendor_food_list(request):
-    # vendor = request.user.vendor
-    vendor = get_object_or_404(Vendor, id=1)
+    # vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
     foods = Food.objects.filter(vendor=vendor)
-    # foods = Food.objects.all()
 
     if request.method == "POST":
         id = request.POST.get("id","")
