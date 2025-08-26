@@ -166,7 +166,7 @@ def vendor_food_list(request):
         
         try:
             # add vendor later
-            food = Food.objects.get(id=id)
+            food = Food.objects.get(id=id, vendor=vendor)
             name = food.name
 
             if operation == "true":
