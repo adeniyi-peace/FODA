@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,13 +9,12 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib import messages
 import json
-from django.shortcuts import render, redirect
-from .models import Vendor
+
 from .utils import hash_password
 from django.http import HttpResponse
 from .utils import check_password
 from shop.models import OrderItem, Food
-from vendor.models import Vendor, BusinessHour
+from .models import Vendor, BusinessHour
 from .forms import BusinessHourFormSet
 
 
@@ -26,12 +25,12 @@ def v_signup(request):
         password = request.POST["password"]
 
         if Vendor.objects.filter(email=email).exists():
-            return render(request, "signup.html", {"error": "Email already taken"})
+            return render(request, "v_signup.html", {"error": "Email already taken"})
 
         hashed_pw = hash_password(password)
         Vendor.objects.create(email=email, password=hashed_pw)
 
-        return redirect("v_login")
+        return redirect(reverse("vendor_login"))
 
     return render(request, "v_signup.html")
 
@@ -67,7 +66,7 @@ def logout(request):
 # @user_passes_test(is_vendor_user, login_url='/auth/login/?next=/vendor-dashboard/')
 def vendor_dashboard(request):
     if not request.vendor_user:
-        return redirect("V_login")
+        return redirect(reverse("vendor_login"))
    
     vendor = request.vendor_user
 
@@ -132,21 +131,22 @@ def vendor_dashboard(request):
 
 
 def vendor_business_hours(request):
-    vendor = request.user.vendor
+    # vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
     business_hours = vendor.business_hour.all()
 
     if request.method == "POST":
         formset = BusinessHourFormSet(
-            request.POST, request.FILES, instance=Vendor, queryset=business_hours
+            request.POST, request.FILES, instance=vendor, queryset=business_hours
         )
 
         if formset.is_valid():
             formset.save()
             messages.success(request, "Schedule Updated Successfully!")
-            return redirect(reverse())
+            return redirect(reverse('vendor_dashboard'))
     
     else:
-        formset = BusinessHourFormSet(instance=Vendor, queryset=business_hours)
+        formset = BusinessHourFormSet(instance=vendor, queryset=business_hours)
 
     context = {
         "business_hours":business_hours,
@@ -156,9 +156,9 @@ def vendor_business_hours(request):
     return render(request, "vendor/business_hours.html", context=context)
     
 def vendor_food_list(request):
-    vendor = request.user.vendor
+    # vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
     foods = Food.objects.filter(vendor=vendor)
-    # foods = Food.objects.all()
 
     if request.method == "POST":
         id = request.POST.get("id","")
@@ -166,7 +166,7 @@ def vendor_food_list(request):
         
         try:
             # add vendor later
-            food = Food.objects.get(id=id)
+            food = Food.objects.get(id=id, vendor=vendor)
             name = food.name
 
             if operation == "true":
