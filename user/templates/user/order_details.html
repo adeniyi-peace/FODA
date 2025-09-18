@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Order Detail {% endblock title %}
+
+{% block content %}
+<section class="p-6 md:max-w-2xl mx-auto">
+    <h1 class="font-bold text-2xl">Order Details</h1>
+
+    <main class="space-y-4 border p-6 border-gray-300 solid rounded-xl">
+        <div>
+            <div class="font-semibold text-xl">Order ID</div>
+            <div class="font-bold">#{{order.id}}</div>
+        </div>
+        
+
+        <div class="flex gap-4 justify-between shadow rounded-xl p-4">
+            <div>
+                <h1 class="text-gray-600 text-sm">Created at</h1>
+                <h1>{{ order.order_date }}</h1>
+            </div>
+
+            <div>
+                <h1 class="text-gray-600 text-sm">Status</h1>
+                <h1 class="inline-block py-1 px-3 text-white rounded {% if order.get_status_display == 'Pending' %}bg-burntOrange-700
+                {% elif order.get_status_display == 'Confirmed' %}bg-green-600
+                {% elif order.get_status_display == 'Canceled' %}bg-red-500
+                {% else %}bg-gray-500{% endif %}">
+                    {{ order.get_status_display }}
+                </h1>
+            </div>
+
+            <div>
+                <h1 class="text-gray-600 text-sm">Payment</h1>
+                <h1 class="inline-block py-1 px-3 text-white rounded {% if order.paid %}bg-green-600{% else %}bg-red-500{% endif %}">{% if order.paid %}Success{% else %}Failed{% endif %}</h1>
+            </div>
+        </div>
+
+        <div class="shadow rounded-xl p-4">
+            <div class="flex gap-4 justify-between"><h1>Full Name</h1><p>{{ order.get_full_name }}</p></div>
+
+            <div class="flex gap-4 justify-between"><h1>Phone Number</h1><p>{{ order.phone.as_national }}</p></div>
+
+            <div class="flex gap-4 justify-between"><h1>Shipping Address</h1><p>{{ order.street }}, {{ order.city }}, {{ order.state }}, {{ order.country }}</p></div>
+
+            <div class="flex gap-4 justify-between"><h1>Total Cost</h1><p>₦{{ order.get_total_price }}</p></div>
+        </div>
+
+        <section>
+            <div class="mb-4">
+                Items <span class="bg-gray-300 py-1 px-2 text-sm rounded-full">{{ order.get_total_quantity }}</span>
+            </div>
+
+            <div class="space-y-4">
+                {% for items in order.order_item.all %}
+                <div class="space-y-4 hover:bg-gray-50 p-4 rounded-xl">
+                    <div class="flex justify-between">
+                        <div class="flex gap-4">
+                            <img src="{{ items.food.image.url }}" alt="{{items.food.name}}" class="object-cover rounded-xl h-28 w-28">
+
+                            <div class="flex flex-col gap-2">
+                                <h1 class="font-semibold">{{ items.food.name }}</h1>
+                                <h1 class="font-semibold text-sm text-gray-600">qty: {{ items.quantity }}</h1>
+                                <h1 class="font-semibold mt-auto">{{ items.vendor.name }}</h1>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center items-center">
+                            ₦{{ items.get_item_total }}
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="w-full h-4 rounded-full border-burntOrange-500 border border-solid">
+                            <div class="{% if items.status == "PD" %}w-1/4
+                            {% elif items.status == "CF" %} w-1/2
+                            {% elif items.status == "ST" %} w-3/4
+                            {% else %} w-full
+                            {% endif %}
+                            {% if items.status != "CN" %}bg-burntOrange-600
+                            {% else %}bg-gray-500
+                            {% endif %} h-full rounded-full"></div>
+                        </div>
+
+                        {% if items.status != "CN" %}
+                        <div class="absolute w-full flex justify-around items-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div class="rounded-full bg-white">
+                                <div class="rounded-full p-2 border-burntOrange-600 border border-solid {% if items.status in "PD,CF,ST,DL" %}bg-burntOrange-600{% endif %}">
+                                    <img src={% static "user/svg/loading-30.svg" %} class="size-8"/>
+                                </div>
+                            </div>
+                            <div class="rounded-full bg-white">
+                                <div class="rounded-full p-2 border-burntOrange-600 border border-solid {% if items.status in "CF,ST,DL"  %}bg-burntOrange-600{% endif %}">
+                                    <img src={% static "user/svg/confirmed.svg" %} class="size-8" />
+                                </div>
+                            </div>
+                            <div class="rounded-full bg-white">
+                                <div class="rounded-full p-1 border-burntOrange-600 border border-solid {% if items.status in "ST,DL"  %}bg-burntOrange-600{% endif %}">
+                                    <img src={% static "user/svg/delivery-fast-shipping-svgrepo-com.svg" %} class="size-10"/>
+                                </div> 
+                            </div>
+                            <div class="rounded-full bg-white">
+                                <div class="rounded-full p-2 border-burntOrange-600 border border-solid {% if items.status == "DL" %}bg-burntOrange-600{% endif %}">
+                                    <img src={% static "user/svg/package-delivery-box-11-svgrepo-com.svg" %} class="size-8"/>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="absolute rounded-full p-2 flex justify-center items-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 {% if items.status == "CN" %}bg-gray-500{% endif %}">
+                            <img src={% static "user/svg/cancel-svgrepo-com.svg" %} class="size-8"/>
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                    
+                    {% if items.status != "CN" %}
+                    <div class="grid grid-cols-4 text-center mt-4 text-sm"><h1>Pending</h1> <h1>Confirmed</h1> <h1>Sent</h1> <h1>Delivered</h1></div>
+                    {% else %}
+                    <div class="grid grid-cols-1 text-center mt-4 text-sm"><h1>Canceled</h1>{% endif %}
+                    
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</section>
+{% endblock content %}

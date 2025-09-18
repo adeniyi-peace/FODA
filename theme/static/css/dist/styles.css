@@ -339,6 +339,9 @@
   .m-\[1rem_auto\] {
     margin: 1rem auto;
   }
+  .m-6 {
+    margin: calc(var(--spacing) * 6) /* 1.5rem = 24px */;
+  }
   .mx-6 {
     margin-inline: calc(var(--spacing) * 6);
   }
@@ -383,6 +386,9 @@
   }
   .mt-\[1rem\] {
     margin-top: 1rem;
+  }
+  .mt-auto {
+    margin-top: auto;
   }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
@@ -476,9 +482,6 @@
     width: 100%;
     height: 100%;
   }
-  .h-3\/5 {
-    height: calc(3/5 * 100%);
-  }
   .h-4 {
     height: calc(var(--spacing) * 4);
   }
@@ -515,8 +518,17 @@
   .min-h-screen {
     min-height: 100vh;
   }
+  .w-1\/2 {
+    width: calc(1/2 * 100%);
+  }
   .w-1\/3 {
     width: calc(1/3 * 100%);
+  }
+  .w-1\/4 {
+    width: calc(1/4 * 100%);
+  }
+  .w-3\/4 {
+    width: calc(3/4 * 100%);
   }
   .w-4 {
     width: calc(var(--spacing) * 4);
@@ -653,6 +665,9 @@
   }
   .grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -1005,6 +1020,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-1 {
+    padding: calc(var(--spacing) * 1) /* 0.25rem = 4px */;
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -1077,9 +1095,6 @@
   .py-\[0\.5rem\] {
     padding-block: 0.5rem;
   }
-  .pt-4 {
-    padding-top: calc(var(--spacing) * 4);
-  }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
   }
@@ -1115,10 +1130,6 @@
   .text-4xl {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
-  }
-  .text-5xl {
-    font-size: var(--text-5xl);
-    line-height: var(--tw-leading, var(--text-5xl--line-height));
   }
   .text-base {
     font-size: var(--text-base);
@@ -1541,6 +1552,11 @@
       display: block;
     }
   }
+  .md\:max-w-2xl {
+    @media (width >= 48rem /* 768px */) {
+        max-width: var(--container-2xl) /* 42rem = 672px */;
+    }
+  }
   @media (width < 48rem) {
     .max-md\:hidden {
       display: none;
@@ -1584,11 +1600,6 @@
   @media (width < 40rem) {
     .max-sm\:hidden {
       display: none;
-    }
-  }
-  @media (width < 40rem) {
-    .max-sm\:h-2\/3 {
-      height: calc(2/3 * 100%);
     }
   }
   @media (width < 40rem) {

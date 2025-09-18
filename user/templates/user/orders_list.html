@@ -43,7 +43,7 @@
             <span class="px-3 py-1 rounded-full text-white text-xs {% if order.get_status_display == 'Pending' %}bg-burntOrange-700{% elif order.get_status_display == 'Confirmed' %}bg-green-600{% elif order.get_status_display == 'Canceled' %}bg-red-500{% else %}bg-gray-500{% endif %}">
               {{ order.get_status_display }}
             </span>
-          <td><a href="#" class="text-blue-600 hover:underline">
+          <td><a href="{% url "order_detail" order.id %}" class="text-blue-600 hover:underline">
                 <svg class="fill-burntOrange-700 hover:fill-burntOrange-600 active:fill-burntOrange-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="inline-block align-middle">
                   <path d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 
                         13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z"/>

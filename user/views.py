@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.http import Http404
 from django.views import View
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -161,4 +162,17 @@ class OrderView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
+
+
+class OrderDetailView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            order = Order.objects.prefetch_related("order_item").get(user=request.user, id=pk)
+        except Order.DoesNotExist:
+            raise Http404("order detail does not exist")
+        context = {
+            "order":order
+        }
+
+        return render(request, "user/order_details.html", context)
     
