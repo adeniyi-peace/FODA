@@ -157,8 +157,8 @@ def vendor_business_hours(request):
     return render(request, "vendor/business_hours.html", context=context)
     
 def vendor_food_list(request):
-    vendor = get_object_or_404(Vendor, id=4)
-    # vendor = request.vendor_user
+    # vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
     foods = Food.objects.filter(vendor=vendor)
 
     if request.method == "POST":
@@ -195,8 +195,8 @@ def vendor_food_list(request):
     return render(request, "vendor/food_list.html", context=context)
 
 def add_food(request):
-    # vendor = request.vendor
-    vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
+    # vendor = get_object_or_404(Vendor, id=4)
     form = FoodForm
 
     if request.method == "POST":
@@ -216,8 +216,8 @@ def add_food(request):
     return render(request, "vendor/add_food.html", context)
 
 def update_food(request, id):
-    # vendor = request.vendor
-    vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
+    # vendor = get_object_or_404(Vendor, id=4)
     food = get_object_or_404(Food, id=id, vendor=vendor)
     form = FoodForm(instance=food)
 
@@ -238,8 +238,8 @@ def update_food(request, id):
     return render(request, "vendor/update_food.html", context)
 
 def delete_food(request, id):
-    # vendor = request.vendor
-    vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
+    # vendor = get_object_or_404(Vendor, id=4)
     food = get_object_or_404(Food, id=id, vendor=vendor)
 
     food.delete()
@@ -248,8 +248,8 @@ def delete_food(request, id):
     return redirect("vendor_food_list")
 
 def vendor_customer_order(request):
-    # vendor = request.vendor
-    vendor = get_object_or_404(Vendor, id=4)
+    vendor = request.vendor_user
+    # vendor = get_object_or_404(Vendor, id=4)
     orders = Order.objects.filter(order_item__vendor=vendor).prefetch_related(
         Prefetch("order_item", queryset=OrderItem.objects.select_related("food"))
     )
