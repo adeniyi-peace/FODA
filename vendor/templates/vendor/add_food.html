@@ -1,0 +1,53 @@
+{% extends 'vendor_base.html' %}
+
+{% block title %}Add Food{% endblock title %}
+
+{% block content %}
+<br><br>
+
+<form method="post" enctype="multipart/form-data" class="p-6">
+  {% csrf_token %}
+	<div class="mx-auto max-w-xl md:max-w-2xl border border-solid border-gray-300">
+		<div class="">
+			<div class="text-center h-20 text-white leading-20 font-bold bg-linear-to-l from-[#2C5364] via-[#203A43] to-[#0F2027]">
+				<p>ADD FOOD</p>
+			</div>
+
+			<div class="px-6 py-4">
+				<div class="grid grid-cols-1 md:grid-cols-2 md:gap-8">
+					<div class="">
+						<div class="">
+							{{ form.name.label_tag }}
+							{{ form.name }}
+						</div>
+
+						<div class="">
+							{{ form.description.label_tag }}
+							{{ form.description }}
+						</div>
+
+					</div>
+
+					<div class="">
+						<div class="">
+							{{ form.price.label_tag }}
+							{{ form.price }}
+						</div>
+
+						<div class="">
+							{{ form.image.label_tag }}
+							{{ form.image }}
+						</div>
+
+
+					</div>
+				</div>
+
+				<button type="submit" class="border-0 rounded-full w-1/5 py-1 bg-green-600 text-white cursor-pointer">ADD</button>
+
+			</div>
+		</div>
+	</div>
+</form>
+
+{% endblock content %}

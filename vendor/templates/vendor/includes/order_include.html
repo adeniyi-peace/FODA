@@ -1,0 +1,78 @@
+{% for order in orders %}
+    <div class="bg-white rounded-xl shadow-md p-4 space-y-4 mb-4">
+        <div>
+            <h2 class="font-semibold">Order #{{ order.id }}</h2>
+            <div class="text-sm text-gray-500 flex gap-4">
+                <h2>Name: {{ order.get_full_name }}</h2>
+                <h2>Phone: {{order.phone}}  </h2>
+                <h2>Address: {{ order.street }}, {{ order.city }}, {{ order.state }}, {{ order.country }}</h2>
+                <h2>Time: {{ order.order_date }} </h2>
+            </div>
+        </div>
+        
+        
+        <table class="border-collapse border border-solid w-11/12 mx-auto text-sm">
+            <thead>
+                <tr class="font-bold text-left">
+                <th class="p-2 border border-solid">Food</th>
+                <th class="p-2 border border-solid">Qty</th>
+                <th class="p-2 border border-solid">Price</th>
+                <th class="p-2 border border-solid">Subtotal</th>
+                <th class="p-2 border border-solid">Status</th>
+                <th class="p-2 border border-solid">Actions</th>
+                </tr>
+            </thead>
+            
+            <tbody class="">
+                {% for item in order.order_item.all %}
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="border border-solid align-top"><div class="flex gap-1 flex-col justify-center items-center">
+                            <img src="{{ item.food.image.url }}" alt="food Pic" height="40px" width="40px" />
+                            <h2>{{item.food.name}}</h2>
+                        </div>
+                    </td>
+                    <td class="p-2 border border-solid align-top">{{item.quantity}}</td>
+                    <td class="p-2 border border-solid align-top">{{ item.price }}</td>
+                    <td class="p-2 border border-solid align-top">{{ item.get_item_total }}</td>
+                    <td class="p-2 border border-solid align-top">
+                        <span class="px-3 py-1 rounded-full text-white {% if item.get_status_display == 'Pending' %}bg-burntOrange-700
+                        {% elif item.get_status_display == 'Confirmed' %}bg-green-600
+                        {% elif item.get_status_display == 'Canceled' %}bg-red-500
+                        {% else %}bg-gray-500{% endif %}">{{item.get_status_display}}</span>
+                    </td>
+                    <td class="p-2 border border-solid align-top">
+                        <div class="flex gap-1 flex-col text-xs">
+                            {% if item.status == "PD" %}
+                            <a href="" class="px-2 py-1 rounded-lg shadow-lg border bg-green-100 border-green-300 text-green-800 update_status"
+                            data-action="confirm" data-id={{item.id}}>
+                                Confirm Order
+                            </a>
+                            <a href="" class="px-2 py-1 rounded-lg shadow-lg border  bg-red-100 border-red-300 text-red-800 update_status"
+                            data-action="cancel" data-id={{item.id}}>
+                                Cancel Order
+                            </a>
+                            {% elif item.status == "CF" %}
+                            <a href="" class="px-2 py-1 rounded-lg shadow-lg border bg-green-100 border-green-300 text-green-800 update_status"
+                            data-action="sent" data-id={{item.id}}>
+                                Order Sent 
+                            </a>
+                            {% elif item.status == "ST" %}
+                            <a href="" class="px-2 py-1 rounded-lg shadow-lg border bg-green-100 border-green-300 text-green-800 update_status"
+                            data-action="delivered" data-id={{item.id}}>
+                                Mark Order As Delivered
+                            </a>
+                            {% else %}
+                                <div>No Action</div>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% empty %}
+<div class="text-center py-10 text-burntOrange-600 border border-burntOrange-500 rounded-lg mt-4">
+    <h3 class="text-lg font-semibold">No new order yet.</h3>
+</div>
+{% endfor %}

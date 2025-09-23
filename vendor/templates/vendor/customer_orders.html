@@ -1,0 +1,44 @@
+{% extends 'vendor_base.html' %}
+{% load static %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<div class="px-4 mx-auto">
+    <div class="mx-auto py-3 px-4">
+        <div class="bg-red-300 h-20 font-bold flex justify-center items-center">
+            <h6 class="text-red-800 text-center text-xl bg-linear-to">Total Orders</h6>
+        </div>
+
+        <div id="order_list">
+            {% include "vendor/includes/order_include.html" with orders=orders %}
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $(document).on("click", ".update_status", function(e) {
+            e.preventDefault()
+            const item_id = $(this).data("id")
+            const action = $(this).data("action")
+            console.log(action)
+
+            $.ajax({
+                url:"",
+                type:"POST",
+                data: {id:item_id, csrfmiddlewaretoken: "{{ csrf_token }}", action:action},
+
+                success: (response) => {
+                    if (response.html){
+                        $("#order_list").html(response.html)
+                    }
+                }
+            })
+        })
+    })
+</script>
+{% endblock scripts %}

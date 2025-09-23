@@ -1,5 +1,27 @@
 from django import forms
 from .models import Vendor, BusinessHour
+from shop.models import Food
+
+class FoodForm(forms.ModelForm):
+    class Meta:
+        model = Food
+        exclude = ["vendor"]
+        widgets = {"name":forms.TextInput(attrs={
+            "class":"block w-full my-2 p-2 border border-solid border-gray-300 rounded transition focus:outline-0 focus:ring-3 focus:ring-blue-300"
+        }),
+        "description":forms.Textarea(attrs={
+            "class":"block w-full h-38 my-2 p-2 border border-solid border-gray-300 rounded transition focus:outline-0 focus:ring-3 focus:ring-blue-300",
+            "cols":"40", "rows":"10"
+        }),
+        "price":forms.NumberInput(attrs={
+            "class":"block w-full my-2 p-2 border border-solid border-gray-300 rounded transition focus:outline-0 focus:ring-3 focus:ring-blue-300"
+        }),
+        "image":forms.FileInput(attrs={
+            "class":"block w-full my-2 p-2 border border-solid border-gray-300 rounded transition focus:outline-0 focus:ring-3 focus:ring-blue-300"
+        })
+        
+        }
+
 
 class BusinessHourForm(forms.ModelForm):
     

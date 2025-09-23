@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Prefetch
 from django.db.models.functions import TruncDay, TruncMonth
 from datetime import timedelta
 from django.utils import timezone
@@ -13,9 +14,9 @@ import json
 from .utils import hash_password
 from django.http import HttpResponse
 from .utils import check_password
-from shop.models import OrderItem, Food
+from shop.models import OrderItem, Food, Order
 from .models import Vendor, BusinessHour
-from .forms import BusinessHourFormSet
+from .forms import BusinessHourFormSet, FoodForm
 
 
 def v_signup(request):
@@ -156,8 +157,8 @@ def vendor_business_hours(request):
     return render(request, "vendor/business_hours.html", context=context)
     
 def vendor_food_list(request):
-    # vendor = get_object_or_404(Vendor, id=4)
-    vendor = request.vendor_user
+    vendor = get_object_or_404(Vendor, id=4)
+    # vendor = request.vendor_user
     foods = Food.objects.filter(vendor=vendor)
 
     if request.method == "POST":
@@ -192,3 +193,100 @@ def vendor_food_list(request):
     }
 
     return render(request, "vendor/food_list.html", context=context)
+
+def add_food(request):
+    # vendor = request.vendor
+    vendor = get_object_or_404(Vendor, id=4)
+    form = FoodForm
+
+    if request.method == "POST":
+        form = FoodForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.vendor = vendor
+            form.save()
+
+            messages.success(request, f"The food {form.name} has been Created")
+
+            return redirect("vendor_food_list")
+
+    context = {"form":form}
+
+    return render(request, "vendor/add_food.html", context)
+
+def update_food(request, id):
+    # vendor = request.vendor
+    vendor = get_object_or_404(Vendor, id=4)
+    food = get_object_or_404(Food, id=id, vendor=vendor)
+    form = FoodForm(instance=food)
+
+    if request.method == "POST":
+        form = FoodForm(request.POST, request.FILES, instance=food)
+
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.vendor = vendor
+            form.save()
+
+            messages.success(request, f"The food {food.name} has been Updated")
+
+            return redirect("vendor_food_list")
+
+    context = {"form":form}
+
+    return render(request, "vendor/update_food.html", context)
+
+def delete_food(request, id):
+    # vendor = request.vendor
+    vendor = get_object_or_404(Vendor, id=4)
+    food = get_object_or_404(Food, id=id, vendor=vendor)
+
+    food.delete()
+    messages.success(request, f"The food {food.name} has been deleted suceesfully")
+    
+    return redirect("vendor_food_list")
+
+def vendor_customer_order(request):
+    # vendor = request.vendor
+    vendor = get_object_or_404(Vendor, id=4)
+    orders = Order.objects.filter(order_item__vendor=vendor).prefetch_related(
+        Prefetch("order_item", queryset=OrderItem.objects.select_related("food"))
+    )
+
+    if request.method == "POST":
+        action = request.POST.get("action","")
+        id = request.POST.get("id","")
+
+        item = OrderItem.objects.filter(id=id).first()
+
+        if action == "confirm":
+            item.status = "CF"
+            item.save()
+
+        elif action == "cancel":
+            item.status = "CN"
+            item.save()
+
+        elif action == "sent":
+            item.status = "ST"
+            item.save()
+
+        elif action == "delivered":
+            item.status = "DL"
+            item.save()
+
+        context = {
+            "orders": orders
+        }
+
+        html = render_to_string("vendor/includes/order_include.html", context, request)
+
+        return JsonResponse({"html":html})
+
+    context = {
+        "orders": orders
+    }
+    
+    
+    return render(request, "vendor/customer_orders.html", context)
