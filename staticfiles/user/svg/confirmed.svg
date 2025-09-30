@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Confirmed outline badge">
+  <!-- circle outline -->
+  <circle cx="24" cy="24" r="20" fill="none" stroke="#065f46" stroke-width="2.6"/>
+  <!-- ribbon tail -->
+  <path d="M24 32 L20 40 L28 36 L36 40 L32 32" fill="#065f46" opacity="0.08"/>
+  <!-- checkmark -->
+  <path d="M15.8 25.2 L21.6 30.8 L32.6 19.6" fill="none" stroke="#065f46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
