@@ -5,6 +5,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock title %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         {% tailwind_css %}
@@ -122,28 +123,40 @@
         </main>
 
         {% block scripts %}{% endblock scripts %}
-    </body>
-    
-    <!-- Fade out django messages -->
-    <script>
-    const message = document.getElementById("message")
-    const menu = document.getElementById("vendor-menu")
-    const menu_list = document.getElementById("vendor-menu-list")
-    const menu_overlay = document.getElementById("menu-overlay")
 
-    menu.addEventListener("click", function() {
-        if (menu_list.classList.contains("hidden")){
-            menu_list.classList.replace("hidden", "fixed")
-            menu_overlay.classList.remove("hidden")
-            
-            setTimeout(() => {
-                menu_list.classList.remove("-translate-x-full")
-                menu_list.classList.remove("opacity-0")
-            }, 10)
-            
-        }
-        else {
-            
+        <!-- Fade out django messages -->
+        <script>
+        const message = document.getElementById("message")
+        const menu = document.getElementById("vendor-menu")
+        const menu_list = document.getElementById("vendor-menu-list")
+        const menu_overlay = document.getElementById("menu-overlay")
+
+        menu.addEventListener("click", function() {
+            if (menu_list.classList.contains("hidden")){
+                menu_list.classList.replace("hidden", "fixed")
+                menu_overlay.classList.remove("hidden")
+                
+                setTimeout(() => {
+                    menu_list.classList.remove("-translate-x-full")
+                    menu_list.classList.remove("opacity-0")
+                }, 10)
+                
+            }
+            else {
+                
+                menu_list.classList.add( "-translate-x-full")
+                menu_list.classList.add("opacity-0")
+
+                setTimeout(() => {
+                    menu_list.classList.replace("fixed", "hidden")
+                    menu_overlay.classList.add("hidden")
+                }, 500)
+                
+
+            }
+        })
+
+        menu_overlay.addEventListener("click", function(){
             menu_list.classList.add( "-translate-x-full")
             menu_list.classList.add("opacity-0")
 
@@ -151,32 +164,20 @@
                 menu_list.classList.replace("fixed", "hidden")
                 menu_overlay.classList.add("hidden")
             }, 500)
+        })
+
+        if (message){
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+            message.classList.replace("opacity-100", "opacity-0")
+
+            setTimeout(() => {
+                message.classList.add("hidden")
+            }, 1000)
             
-
+            }, 5000)
+        })
         }
-    })
-
-    menu_overlay.addEventListener("click", function(){
-        menu_list.classList.add( "-translate-x-full")
-        menu_list.classList.add("opacity-0")
-
-        setTimeout(() => {
-            menu_list.classList.replace("fixed", "hidden")
-            menu_overlay.classList.add("hidden")
-        }, 500)
-    })
-
-    if (message){
-      window.addEventListener("load", () => {
-        setTimeout(() => {
-          message.classList.replace("opacity-100", "opacity-0")
-
-          setTimeout(() => {
-            message.classList.add("hidden")
-          }, 1000)
-          
-        }, 5000)
-      })
-    }
-  </script>
+    </script>
+    </body>
 </html>

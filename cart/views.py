@@ -107,6 +107,8 @@ def checkout(request):
                 )
 
             # payment logic here
+
+            cart.clear_cart()
             
             messages.success(request, "Your Order has been Created")
 

@@ -40,7 +40,7 @@ class SignUpView(View):
 
             user = form.save()
 
-            user.generate_verification_code()
+            user.generate_verification_code(request)
 
             # check user model for email generation code 
 
@@ -154,7 +154,7 @@ class RefreshCodeEmailAuthenticationView(View):
                 user = get_object_or_404(User, email=email)
 
                 if user:
-                    user.generate_verification_code()
+                    user.generate_verification_code(request)
 
 
         except ValidationError as e:

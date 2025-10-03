@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template import Context
@@ -116,19 +117,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.full_name = f"{self.last_name} {self.first_name}"
         super().save(*args, **kwargs)
 
-    def generate_verification_code(self):
+    def generate_verification_code(self, request):
         # Generate a 6-digit alphanumeric code
         self.verification_code = unique_code()
         self.verification_code_expires_at = timezone.now() + timedelta(minutes=10) # Code expires in 10 minutes
         self.save()
-        self.send_verification_code()
+        self.send_verification_code(request)
         
-    def send_verification_code(self):
+    def send_verification_code(self, request):
         htmly = get_template("auth/email_verification.html")
+        absolute_url = request.build_absolute_uri(reverse_lazy("refresh_code"))
 
         data = {
             "first_name":self.first_name,
-            "verification_code": self.verification_code
+            "verification_code": self.verification_code,
+            "absolute_url": absolute_url
         }
 
         html_content = htmly.render(data)

@@ -64,6 +64,18 @@ class Cart():
             current_user = User.objects.filter(id=self.request.user.id)
             carty = str(self.cart).replace("'", '"')  # Proper JSON-like format
             current_user.update(old_cart=carty)
+
+    def clear_cart(self):
+        self.cart.clear()
+
+        self.session.modified = True
+
+        if self.request.user.is_authenticated:
+            current_user = self.request.user
+            carty = str(self.cart).replace("'", '"')  # Proper JSON-like format
+            current_user.old_cart=carty
+            current_user.save()
+
         
     def cart_total(self):
         food_ids = self.cart.keys()

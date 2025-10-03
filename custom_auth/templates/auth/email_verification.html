@@ -1,22 +1,38 @@
 {% load i18n %}
-{% autoescape off %}
+{% load static tailwind_tags %}
 
-{% blocktranslate %}Welcome to {{ site_name }}  {{ first_name}}.{% endblocktranslate %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% tailwind_css %}
+</head>
+<body>
+    {% autoescape off %}
 
-{% translate 'Hello' %} {{ user.get_full_name }} {% translate 'you have created an account with us ' %}
-{% translate "Please go to the following page and input the verification code" %}
-{% block reset_link %}
-{{ protocol }}://{{ domain }}{% url 'verify_email_page' %}
-{% endblock %}
+    <h1 class="text-xl mb-4">{% blocktranslate %}Welcome to FODA  {{ first_name}}.{% endblocktranslate %}</h1>
 
-{% translate "verification code" %}
-{{verification_code}}
-
-{% translate 'If this is not you please ignore the link above' %}
+    <h2 class="text-sm mb-4">
+        {% translate 'Hello' %} {{ user.get_full_name }} {% translate 'you have created an account with us ' %}
+        {% translate "Please go to the following page and input the verification code" %}
+    </h2>
+    
+    <h3 class="mb-4">{{ absolute_url }}</h3>
 
 
-{% translate "Thanks for using our site!" %}
+    <h2 class="text-sm mb-4">
+        {% translate "verification code" %}: 
+        <span class="text-xl font-bold">{{verification_code}}</span>
+    </h2>
 
-{% blocktranslate %}The {{ site_name }} team{% endblocktranslate %}
+    <h2 class="text-sm mb-4">{% translate 'If this is not you please ignore the link above' %}</h2>
 
-{% endautoescape %}
+
+    <h2 class="text-sm mb-4">{% translate "Thanks for using our site!" %}</h2>
+
+    <h2 class="text-sm mb-4">{% blocktranslate %}The FODA team{% endblocktranslate %}</h2>
+
+    {% endautoescape %}
+</body>
+</html>
