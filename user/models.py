@@ -126,7 +126,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         
     def send_verification_code(self, request):
         htmly = get_template("auth/email_verification.html")
-        absolute_url = request.build_absolute_uri(reverse_lazy("refresh_code"))
+        absolute_url = request.build_absolute_uri(reverse_lazy("verify_email_page"))
 
         data = {
             "first_name":self.first_name,
